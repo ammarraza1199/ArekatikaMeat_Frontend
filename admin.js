@@ -1,0 +1,181 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const API_URL = 'http://localhost:3000/api';
+    const socket = io('http://localhost:3000');
+
+    const totalOrdersEl = document.getElementById('total-orders');
+    const itemsPackedEl = document.getElementById('items-packed');
+    const totalRevenueEl = document.getElementById('total-revenue');
+    const ordersTableBody = document.getElementById('orders-table-body');
+    const productsTableBody = document.getElementById('products-table-body');
+    const productForm = document.getElementById('product-form');
+    const productModal = new bootstrap.Modal(document.getElementById('product-modal'));
+    const productModalTitle = document.getElementById('product-modal-title');
+    const productIdInput = document.getElementById('product-id');
+
+    let orders = [];
+    let products = [];
+
+    async function getDashboardStats() {
+        try {
+            const response = await fetch(`${API_URL}/admin/dashboard/stats`);
+            const stats = await response.json();
+            totalOrdersEl.textContent = stats.totalOrders;
+            itemsPackedEl.textContent = stats.itemsPacked;
+            totalRevenueEl.textContent = `₹${stats.totalRevenue}`;
+        } catch (error) {
+            console.error('Error fetching dashboard stats:', error);
+        }
+    }
+
+    async function getOrders() {
+        try {
+            const response = await fetch(`${API_URL}/admin/orders`);
+            orders = await response.json();
+            renderOrders();
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+        }
+    }
+
+    async function getProducts() {
+        try {
+            const response = await fetch(`${API_URL}/products`);
+            products = await response.json();
+            renderProducts();
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    }
+
+    function renderOrders() {
+        ordersTableBody.innerHTML = '';
+        orders.forEach(order => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${order.id}</td>
+                <td>${order.userId}</td>
+                <td>${order.shippingAddress.address}, ${order.shippingAddress.city}</td>
+                <td>₹${order.total}</td>
+                <td>
+                    <select class="form-select" onchange="updateOrderStatus('${order.id}', this.value)">
+                        <option value="Order Placed" ${order.status === 'Order Placed' ? 'selected' : ''}>Order Placed</option>
+                        <option value="Packed" ${order.status === 'Packed' ? 'selected' : ''}>Packed</option>
+                        <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                        <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-primary" onclick="viewOrder('${order.id}')">View</button>
+                </td>
+            `;
+            ordersTableBody.appendChild(tr);
+        });
+    }
+
+    function renderProducts() {
+        productsTableBody.innerHTML = '';
+        products.forEach(product => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${product.title}</td>
+                <td>₹${product.pricePerKg}</td>
+                <td>${product.quantity}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary" onclick="editProduct('${product.id}')">Edit</button>
+                    <button class="btn btn-sm btn-danger" onclick="deleteProduct('${product.id}')">Delete</button>
+                </td>
+            `;
+            productsTableBody.appendChild(tr);
+        });
+    }
+
+    window.updateOrderStatus = async function(orderId, status) {
+        try {
+            await fetch(`${API_URL}/admin/orders/${orderId}/status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+            getDashboardStats();
+        } catch (error) {
+            console.error('Error updating order status:', error);
+        }
+    };
+
+    window.editProduct = function(productId) {
+        const product = products.find(p => p.id === productId);
+        productModalTitle.textContent = 'Edit Product';
+        productIdInput.value = product.id;
+        document.getElementById('product-title').value = product.title;
+        document.getElementById('product-desc').value = product.desc;
+        document.getElementById('product-price').value = product.pricePerKg;
+        document.getElementById('product-discount').value = product.discount;
+        document.getElementById('product-weights').value = product.weights.join(', ');
+        document.getElementById('product-image').value = product.image;
+        document.getElementById('product-quantity').value = product.quantity;
+        productModal.show();
+    };
+
+    window.deleteProduct = async function(productId) {
+        if (!confirm('Are you sure you want to delete this product?')) return;
+
+        try {
+            await fetch(`${API_URL}/admin/products/${productId}`, { method: 'DELETE' });
+            getProducts();
+        } catch (error) {
+            console.error('Error deleting product:', error);
+        }
+    };
+
+    productForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = productIdInput.value;
+        const productData = {
+            title: document.getElementById('product-title').value,
+            desc: document.getElementById('product-desc').value,
+            pricePerKg: parseFloat(document.getElementById('product-price').value),
+            discount: parseFloat(document.getElementById('product-discount').value) || null,
+            weights: document.getElementById('product-weights').value.split(',').map(w => w.trim()),
+            image: document.getElementById('product-image').value,
+            quantity: parseInt(document.getElementById('product-quantity').value)
+        };
+
+        try {
+            if (id) {
+                // Update product
+                await fetch(`${API_URL}/admin/products/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+            } else {
+                // Add new product
+                await fetch(`${API_URL}/admin/products`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+            }
+            productModal.hide();
+            getProducts();
+        } catch (error) {
+            console.error('Error saving product:', error);
+        }
+    });
+
+    // Socket.IO listeners
+    socket.on('newOrder', (order) => {
+        orders.unshift(order);
+        renderOrders();
+        getDashboardStats();
+    });
+
+    socket.on('productUpdate', () => {
+        getProducts();
+    });
+
+    // Initial data load
+    getDashboardStats();
+    getOrders();
+    getProducts();
+});

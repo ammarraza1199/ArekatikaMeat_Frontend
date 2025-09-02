@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Stores - AreKatikaMeat</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        /* =========================
+           Custom Navbar Styling
+        ========================= */
+        .custom-navbar {
+            border-bottom: 1px solid maroon;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            padding: 0.75rem 1rem;
+            background-color: #fff;
+        }
+        
+        /* =========================
+           Maroon Theme Buttons
+        ========================= */
+        .btn-maroon {
+            background-color: maroon;
+            color: white;
+        }
+        .btn-maroon:hover {
+            background-color: #a52a2a;
+            color: #fff;
+        }
+        .btn-outline-maroon {
+            border: 2px solid maroon;
+            color: black;
+        }
+        .btn-outline-maroon:hover {
+            background-color: maroon;
+            color: white;
+        }
+        
+        /* =========================
+           Search & Input Styles
+        ========================= */
+        .border-maroon {
+            border: 2px solid maroon;
+        }
+        .input-group .form-control:first-child {
+            flex: 0 0 30%;
+            border-radius: 6px 0 0 6px;
+        }
+        .input-group .form-control:nth-child(2) {
+            flex: 1;
+            border-left: none;
+            border-radius: 0;
+        }
+        .input-group .btn-maroon {
+            border-radius: 0 6px 6px 0;
+        }
+        
+        /* =========================
+           Icon Buttons
+        ========================= */
+        .icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border: 2px solid maroon;
+            border-radius: 50%;
+            color: maroon;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .icon-btn:hover {
+            color: orange;
+            border-color: orange;
+        }
+        
+        .input-group .form-control:focus,
+        .input-group button:focus {
+            outline: none;
+            box-shadow: none;
+        }
+        
+/* =========================
+   Store Cards Styling
+========================= */
+.store-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px; /* Explicit bottom margin for vertical spacing */
+}
+
+.store-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.map-container {
+    width: 100%;
+    height: 200px;
+    position: relative;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.store-card-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: white;
+}
+
+.store-card-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.store-card-address {
+    color: #555;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    max-width: 90%;
+}
+
+.maroon-line {
+    height: 3px;
+    background-color: maroon;
+    border-radius: 2px;
+    width: 275px;
+    margin: 20px auto 40px;
+}
+
+/* Our Stores Section Background */
+section.py-5 {
+    background-color: white;
+}
+
+/* Custom spacing for store cards */
+.store-row {
+    margin-bottom: -30px; /* Negative margin to offset card bottom margin */
+}
+
+.store-card-wrapper {
+    padding: 0 15px;
+    margin-bottom: 30px; /* Space between rows */
+}
+
+/* For mobile view */
+@media (max-width: 767px) {
+    .store-card-wrapper {
+        margin-bottom: 40px; /* More space on mobile */
+    }
+}
+        
+        /* =========================
+           Footer Styles
+        ========================= */
+        footer {
+            background-color: #fff8f3;
+            color: whitesmoke;
+        }
+        .footer-brand {
+            color: #800000;
+            font-weight: bold;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        .footer-tagline {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .footer-heading {
+            color: #333;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            color: #555;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: #800000;
+        }
+        .footer-links i {
+            font-size: 0.7rem;
+            margin-right: 5px;
+            color: #800000;
+        }
+        .contact-info li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+        .contact-info i {
+            color: #800000;
+            margin-top: 3px;
+        }
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(128, 0, 0, 0.1);
+            color: #800000;
+            transition: all 0.3s ease;
+        }
+        .social-icon:hover {
+            background-color: #800000;
+            color: white;
+            transform: translateY(-3px);
+        }
+        .newsletter input {
+            background-color: white;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+        .newsletter input::placeholder {
+            color: #999;
+        }
+        .newsletter input:focus {
+            background-color: white;
+            border-color: #800000;
+            box-shadow: 0 0 0 0.25rem rgba(128, 0, 0, 0.25);
+            color: #333;
+        }
+        .btn-subscribe {
+            background-color: #800000;
+            border: none;
+            color: white;
+            font-weight: bold;
+            padding: 0 15px;
+        }
+        .btn-subscribe:hover {
+            background-color: #600000;
+        }
+        .copyright {
+            color: #555;
+            font-size: 0.9rem;
+        }
+        .policy-links {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        .policy-links a {
+            color: #555;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .policy-links a:hover {
+            color: #800000;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 767px) {
+            .policy-links {
+                justify-content: flex-start;
+                margin-top: 15px;
+            }
+            
+            .footer-brand {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm custom-navbar">
+        <div class="container-fluid d-flex justify-content-around align-items-center">
+            <!-- Brand -->
+            <a href="index.html" class="navbar-brand fw-bold text-black">AreKatikaMeat</a>
+            <!-- Combined Location + Search -->
+            <div class="input-group" style="max-width: 400px;">
+                <!-- Location Button -->
+                <button class="btn btn-outline-maroon" type="button" id="locationBtn">
+                    Enter Location
+                </button>
+                <!-- Search Input -->
+                <input type="text" class="form-control border-maroon" placeholder="Search Product Here">
+                <!-- Search Icon -->
+                <button class="btn btn-maroon" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+            <!-- Buttons -->
+            <div class="d-flex align-items-center">
+                <a href="ecommerce.html" class="btn btn-maroon text-white me-2">Shop Now</a>
+                <a href="ourStores.html" class="btn btn-outline-maroon">Our Stores</a>
+            </div>
+            <!-- Icons -->
+            <div class="d-flex align-items-center">
+                <a href="auth.html" class="icon-btn me-2"><i class="bi bi-person"></i></a>
+                <a href="#" class="icon-btn me-2"><i class="bi bi-heart"></i></a>
+                <a href="#" class="icon-btn"><i class="bi bi-cart"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Our Stores Section -->
+<section class="py-5">
+    <div class="container">
+        <h1 class="text-center mb-4">Our Stores</h1>
+        <div class="maroon-line"></div>
+        
+        <div class="row store-row">
+            <!-- Store Card 1 -->
+            <div class="col-lg-4 col-md-6 store-card-wrapper">
+                <div class="store-card">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.947948842519!2d77.2295093150825!3d28.6129124824198!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce2a992f5a7d5%3A0x742a5b1b1b1b1b1b!2sIndia%20Gate!5e0!3m2!1sen!2sin!4v1623456789012!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <div class="store-card-body">
+                        <h3 class="store-card-title">India Gate</h3>
+                        <p class="store-card-address">Rajpath, India Gate, New Delhi, Delhi 110001</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=India+Gate,+New+Delhi" target="_blank" class="btn btn-maroon">Find the store</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Store Card 2 -->
+            <div class="col-lg-4 col-md-6 store-card-wrapper">
+                <div class="store-card">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.843943502612!2d72.83407031478422!3d18.92198448719778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7d1cffffff000%3A0xf517c1f8f0a1e5a!2sGateway%20Of%20India%20Mumbai!5e0!3m2!1sen!2sin!4v1623456789012!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <div class="store-card-body">
+                        <h3 class="store-card-title">Gateway of India</h3>
+                        <p class="store-card-address">Apollo Bandar, Colaba, Mumbai, Maharashtra 400001</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Gateway+of+India,+Mumbai" target="_blank" class="btn btn-maroon">Find the store</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Store Card 3 -->
+            <div class="col-lg-4 col-md-6 store-card-wrapper">
+                <div class="store-card">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3578.742437533438!2d78.04206851455196!3d27.175144782989097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39747121d702ff6d%3A0xdd2ae4803f767dde!2sTaj%20Mahal!5e0!3m2!1sen!2sin!4v1623456789012!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <div class="store-card-body">
+                        <h3 class="store-card-title">Taj Mahal</h3>
+                        <p class="store-card-address">Dharmapuri, Forest Colony, Tajganj, Agra, Uttar Pradesh 282001</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Taj+Mahal,+Agra" target="_blank" class="btn btn-maroon">Find the store</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Store Card 4 -->
+            <div class="col-lg-4 col-md-6 store-card-wrapper">
+                <div class="store-card">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3773.647542502612!2d72.82563331478422!3d18.94496448719778!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c63066d3c7b1%3A0x4b3b0e5a5a5a5a5a!2sMarine%20Drive!5e0!3m2!1sen!2sin!4v1623456789012!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <div class="store-card-body">
+                        <h3 class="store-card-title">Marine Drive</h3>
+                        <p class="store-card-address">Marine Drive, Mumbai, Maharashtra 400021</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Marine+Drive,+Mumbai" target="_blank" class="btn btn-maroon">Find the store</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Store Card 5 -->
+            <div class="col-lg-4 col-md-6 store-card-wrapper">
+                <div class="store-card">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3684.842137533438!2d88.34306851455196!3d22.575144782989097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f882dee4d4b7c1%3A0x4b3b0e5a5a5a5a5a!2sHowrah%20Bridge!5e0!3m2!1sen!2sin!4v1623456789012!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <div class="store-card-body">
+                        <h3 class="store-card-title">Howrah Bridge</h3>
+                        <p class="store-card-address">Howrah Bridge, Howrah, Kolkata, West Bengal 711101</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Howrah+Bridge,+Kolkata" target="_blank" class="btn btn-maroon">Find the store</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Store Card 6 -->
+            <div class="col-lg-4 col-md-6 store-card-wrapper">
+                <div class="store-card">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3807.042137533438!2d78.47406851455196!3d17.361144782989097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb77dbf8f5a4b1%3A0x4b3b0e5a5a5a5a5a!2sCharminar!5e0!3m2!1sen!2sin!4v1623456789012!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <div class="store-card-body">
+                        <h3 class="store-card-title">Charminar</h3>
+                        <p class="store-card-address">Charminar, Hyderabad, Telangana 500002</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=Charminar,+Hyderabad" target="_blank" class="btn btn-maroon">Find the store</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Footer -->
+    <footer class="bg-white text-grey py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Brand Section -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h2 class="footer-brand">Arekatika</h2>
+                    <p class="footer-tagline">Your trusted partner for premium fresh goat meat. From farm to fork, we ensure tender, hygienically processed goat meat with the highest quality and freshness in every cut.</p>
+                    
+                    <!-- Social Media Icons -->
+                    <div class="social-icons mt-3">
+                        <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+                        <a href="#" class="social-icon"><i class="bi bi-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Quick Links Section -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="footer-heading">Quick Links</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#"><i class="bi bi-chevron-right"></i> Home</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right"></i> Shop</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right"></i> About Us</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right"></i> Contact</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right"></i> Our Stores</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right"></i> Track Order</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Categories Section -->
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="footer-heading">Categories</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#"><i class="bi bi-chevron-right"></i> Primarry Cuts</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right"></i> Organs</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right"></i> Special Cuts</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right"></i> Combos & Bulk Packs</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right"></i> Extras and Addons</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Contact Section -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="footer-heading">Get in Touch</h5>
+                    <ul class="list-unstyled contact-info">
+                        <li class="mb-2">
+                            <i class="bi bi-geo-alt-fill me-2"></i>
+                            <span>123 Market Street, Fresh City, FC 12345</span>
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-telephone-fill me-2"></i>
+                            <span>+91 98765 43210</span>
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-envelope-fill me-2"></i>
+                            <span>info@arekatika.com</span>
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-clock-fill me-2"></i>
+                            <span>Mon-Sun: 6 AM - 10 PM</span>
+                        </li>
+                    </ul>
+                    
+                    <!-- Newsletter Subscription -->
+                    <div class="newsletter mt-4">
+                        <h5 class="footer-heading">Stay Updated</h5>
+                        <form class="d-flex">
+                            <input type="email" class="form-control me-2" placeholder="Your email">
+                            <button class="btn btn-subscribe" type="submit">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Copyright Section -->
+            <div class="border-top border-secondary pt-4 mt-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="copyright mb-0">© 2024 Arekatika Fresh Butcher. All rights reserved.</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <div class="policy-links">
+                            <a href="#">Privacy Policy</a>
+                            <a href="#">Terms of Service</a>
+                            <a href="#">Refund Policy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Portal - AreKatikaMeat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: transparent;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* =========================
+           Custom Navbar Styling
+        ========================= */
+        .custom-navbar {
+            border-bottom: 1px solid maroon;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            padding: 0.75rem 1rem;
+            background-color: #fff;
+            margin-bottom: 0; /* Remove margin below navbar */
+        }
+        
+        /* =========================
+           Maroon Theme Buttons
+        ========================= */
+        .btn-maroon {
+            background-color: maroon;
+            color: white;
+        }
+        .btn-maroon:hover {
+            background-color: #a52a2a;
+            color: #fff;
+        }
+        .btn-outline-maroon {
+            border: 2px solid maroon;
+            color: black;
+        }
+        .btn-outline-maroon:hover {
+            background-color: maroon;
+            color: white;
+        }
+        
+        /* =========================
+           Search & Input Styles
+        ========================= */
+        .border-maroon {
+            border: 2px solid maroon;
+        }
+        
+        /* Make Location smaller and Search wider */
+        .input-group .form-control:first-child {
+            flex: 0 0 30%;
+            border-radius: 6px 0 0 6px;
+            background-color: white;
+            color: black;
+        }
+        .input-group .form-control:nth-child(2) {
+            flex: 1;
+            border-left: none;
+            border-radius: 0;
+            background-color: white;
+            color: black;
+        }
+        .input-group .btn-maroon {
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .input-group .form-control:focus,
+        .input-group button:focus {
+            outline: none;
+            box-shadow: none;
+        }
+        
+        /* =========================
+           Icon Buttons
+        ========================= */
+        .icon-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border: 2px solid maroon;
+            border-radius: 50%;
+            color: maroon;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .icon-btn:hover {
+            color: orange;
+            border-color: orange;
+        }
+        
+        /* Auth Container Styling */
+        .auth-container {
+            display: flex;
+            min-height: calc(100vh - 80px); /* Adjusted for navbar height */
+            gap: 0; /* Remove gap between cards */
+            padding: 0;
+            margin: 0; /* Remove all margins */
+        }
+        
+        .auth-half {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transition: all 0.5s ease;
+            padding: 20px 0; /* Add vertical padding */
+        }
+        
+        /* Admin half: smoke background, biscuit card */
+        #adminHalf {
+            background-color: #f0f0f0; /* Smoke background */
+        }
+        
+        /* User half: biscuit background, smoke card */
+        #userHalf {
+            background-color: #f5e6d3; /* Biscuit background */
+        }
+        
+        .auth-form {
+            width: 90%; /* Increased width */
+            max-width: 450px; /* Increased max width */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            min-height: 400px; /* Minimum height */
+            height: auto; /* Auto height based on content */
+            overflow: visible; /* Show all content */
+            transition: all 0.5s ease;
+            margin: 0; /* Remove margin */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically */
+        }
+        
+        .admin-form {
+            background-color: #f5e6d3; /* Biscuit color for admin card */
+        }
+        
+        .user-form {
+            background-color: #f0f0f0; /* Smoke color for user card */
+        }
+        
+        .auth-form.active {
+            box-shadow: 0 0 20px rgba(128, 0, 32, 0.3);
+            transform: scale(1.02); /* Slightly enlarge active card */
+        }
+        
+        .auth-form.inactive {
+            opacity: 0.6;
+            pointer-events: none;
+            transform: scale(0.98); /* Slightly shrink inactive card */
+        }
+        
+        .form-control {
+            border: 2px solid #800020; /* Maroon border */
+            color: black;
+            background-color: white; /* White background */
+        }
+        
+        .form-control::placeholder {
+            color: #6c757d; /* Gray placeholder */
+        }
+        
+        .form-control:focus {
+            border-color: #800020;
+            box-shadow: 0 0 0 0.25rem rgba(128, 0, 32, 0.25);
+        }
+        
+        .btn-auth {
+            background-color: #800020; /* Maroon color */
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 10px;
+            font-weight: bold;
+        }
+        
+        .btn-auth:hover {
+            background-color: #660018;
+            color: white;
+        }
+        
+        .form-check-input:checked {
+            background-color: #800020;
+            border-color: #800020;
+        }
+        
+        .form-check-input {
+            border-color: black;
+        }
+        
+        .form-check-label {
+            color: black;
+        }
+        
+        .auth-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .auth-description {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .admin-icon, .user-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: block;
+            background-color: #f0f0f0;
+            border: 2px solid #800020;
+            object-fit: cover;
+        }
+        
+        .user-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #800020;
+        }
+        
+        .signup-link {
+            color: #0066cc;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        .signup-link:hover {
+            text-decoration: underline;
+        }
+        
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .file-upload input[type=file] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-upload-label {
+            display: block;
+            padding: 8px;
+            border: 2px solid #800020;
+            border-radius: 4px;
+            background-color: white; /* White background */
+            color: black; /* Black text */
+            text-align: center;
+        }
+        
+        .otp-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+        
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 20px;
+            background-color: white; /* White background */
+            color: black; /* Black text */
+        }
+        
+        .success-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            text-align: center;
+        }
+        
+        .success-popup h3 {
+            color: #800020;
+            margin-bottom: 15px;
+        }
+        
+        .switch-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
+            text-align: center;
+        }
+        
+        .switch-modal h3 {
+            margin-bottom: 20px;
+        }
+        
+        .switch-modal .btn {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm custom-navbar">
+        <div class="container-fluid d-flex justify-content-around align-items-center">
+            <!-- Brand -->
+            <a class="navbar-brand fw-bold text-black" href="index.html">AreKatikaMeat</a>
+            <!-- Combined Location + Search -->
+            <div class="input-group" style="max-width: 400px;">
+                <!-- Location Button -->
+                <button class="btn btn-outline-maroon" type="button" id="locationBtn">
+                    Enter Location
+                </button>
+                <!-- Search Input -->
+                <input type="text" class="form-control border-maroon" placeholder="Search Product Here">
+                <!-- Search Icon -->
+                <button class="btn btn-maroon" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+            <!-- Buttons -->
+            <div class="d-flex align-items-center">
+                <a href="index.html" class="btn btn-maroon text-white me-2">Home</a>
+                <a href="ecommerce.html" class="btn btn-maroon text-white me-2">Shop Now</a>
+                <a href="ourStores.html" class="btn btn-outline-maroon">Our Stores</a>
+            </div>
+            <!-- Icons -->
+            <div class="d-flex align-items-center">
+                <a href="auth.html" class="icon-btn me-2"><i class="bi bi-person"></i></a>
+                <a href="#" class="icon-btn me-2"><i class="bi bi-heart"></i></a>
+                <a href="cart.html" class="icon-btn"><i class="bi bi-cart"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Auth Container -->
+    <div class="auth-container">
+        <!-- Admin Half -->
+        <div class="auth-half" id="adminHalf">
+            <div class="auth-form admin-form active" id="adminForm">
+                <!-- Admin Login Form -->
+                <div id="adminLoginForm">
+                    <h2 class="auth-title">Admin Login</h2>
+                    <p class="auth-description">Access the admin dashboard with your credentials</p>
+                    
+                    <div class="admin-icon" id="adminIcon">
+                        <i class="bi bi-person-fill" style="font-size: 40px; color: #800020; display: flex; align-items: center; justify-content: center; height: 100%;"></i>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="adminEmail" placeholder="Email ID">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="password" class="form-control" id="adminPassword" placeholder="Password">
+                    </div>
+                    
+                    <button class="btn btn-auth mb-3" onclick="adminLogin()">Login</button>
+                    
+                    <div class="text-center">
+                        Don't have an account? <span class="signup-link" onclick="showAdminSignup()">signup</span>
+                    </div>
+                </div>
+                
+                <!-- Admin Signup Form -->
+                <div id="adminSignupForm" style="display: none;">
+                    <h2 class="auth-title">Admin Signup</h2>
+                    
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="adminFirstName" placeholder="First Name">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="adminLastName" placeholder="Last Name">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="tel" class="form-control" id="adminPhone" placeholder="Phone Number">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="adminSignupEmail" placeholder="Email ID">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="file-upload">
+                            <input type="file" id="adminImageUpload" accept="image/*" onchange="previewAdminImage(event)">
+                            <label for="adminImageUpload" class="file-upload-label">Upload Image</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="password" class="form-control" id="adminSignupPassword" placeholder="Password">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Verify OTP</label>
+                        <div class="otp-section">
+                            <input type="text" class="form-control otp-input" maxlength="1">
+                            <input type="text" class="form-control otp-input" maxlength="1">
+                            <input type="text" class="form-control otp-input" maxlength="1">
+                            <input type="text" class="form-control otp-input" maxlength="1">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="adminTermsCheck">
+                        <label class="form-check-label" for="adminTermsCheck">Agree our terms and conditions</label>
+                    </div>
+                    
+                    <button class="btn btn-auth mb-3" onclick="adminSignup()">Signup</button>
+                    
+                    <div class="text-center">
+                        Already have an account? <span class="signup-link" onclick="showAdminLogin()">login</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- User Half -->
+        <div class="auth-half" id="userHalf">
+            <div class="auth-form user-form inactive" id="userForm">
+                <!-- User Login Form -->
+                <div id="userLoginForm">
+                    <h2 class="auth-title">Customer Login</h2>
+                    <p class="auth-description">Access your account with your credentials</p>
+                    
+                    <div class="user-icon">
+                        <i class="bi bi-person"></i>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="userEmail" placeholder="Email ID">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="password" class="form-control" id="userPassword" placeholder="Password">
+                    </div>
+                    
+                    <button class="btn btn-auth mb-3" onclick="userLogin()">Login</button>
+                    
+                    <div class="text-center">
+                        Don't have an account? <span class="signup-link" onclick="showUserSignup()">signup</span>
+                    </div>
+                </div>
+                
+                <!-- User Signup Form -->
+                <div id="userSignupForm" style="display: none;">
+                    <h2 class="auth-title">User Signup</h2>
+                    
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="userFirstName" placeholder="First Name">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="userLastName" placeholder="Last Name">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="tel" class="form-control" id="userPhone" placeholder="Phone Number">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="userSignupEmail" placeholder="Email ID">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <input type="password" class="form-control" id="userSignupPassword" placeholder="Password">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Verify OTP</label>
+                        <div class="otp-section">
+                            <input type="text" class="form-control otp-input" maxlength="1">
+                            <input type="text" class="form-control otp-input" maxlength="1">
+                            <input type="text" class="form-control otp-input" maxlength="1">
+                            <input type="text" class="form-control otp-input" maxlength="1">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="userTermsCheck">
+                        <label class="form-check-label" for="userTermsCheck">Agree our terms and conditions</label>
+                    </div>
+                    
+                    <button class="btn btn-auth mb-3" onclick="userSignup()">Signup</button>
+                    
+                    <div class="text-center">
+                        Already have an account? <span class="signup-link" onclick="showUserLogin()">login</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Popup -->
+    <div class="success-popup" id="successPopup">
+        <h3>Signin Successful!</h3>
+        <p>Please login with your credentials</p>
+        <button class="btn btn-auth" onclick="closeSuccessPopup()">OK</button>
+    </div>
+
+    <!-- Switch Modal -->
+    <div class="switch-modal" id="switchModal">
+        <h3 id="switchModalTitle">Are you changing to User portal?</h3>
+        <div>
+            <button class="btn btn-success" id="switchYesBtn">Yes</button>
+            <button class="btn btn-danger" id="switchNoBtn">No</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set initial state - admin side active
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('adminForm').classList.add('active');
+            document.getElementById('userForm').classList.add('inactive');
+        });
+
+        const API_URL = 'http://localhost:3000/api';
+
+        // Track active portal
+        let activePortal = 'admin';
+        let pendingSwitch = null;
+
+        // Toggle between login and signup for admin
+        function showAdminSignup() {
+            document.getElementById('adminLoginForm').style.display = 'none';
+            document.getElementById('adminSignupForm').style.display = 'block';
+        }
+
+        function showAdminLogin() {
+            document.getElementById('adminLoginForm').style.display = 'block';
+            document.getElementById('adminSignupForm').style.display = 'none';
+        }
+
+        // Toggle between login and signup for user
+        function showUserSignup() {
+            document.getElementById('userLoginForm').style.display = 'none';
+            document.getElementById('userSignupForm').style.display = 'block';
+        }
+
+        function showUserLogin() {
+            document.getElementById('userLoginForm').style.display = 'block';
+            document.getElementById('userSignupForm').style.display = 'none';
+        }
+
+        // Preview admin image
+        function previewAdminImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('adminIcon');
+                output.innerHTML = `<img src="${reader.result}" alt="Admin Icon" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`;
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // Check if form has any filled fields
+        function hasFormFieldsFilled(formId) {
+            const form = document.getElementById(formId);
+            const inputs = form.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="password"], input[type="file"]');
+
+            for (let input of inputs) {
+                if (input.value.trim() !== '') {
+                    return true;
+                }
+            }
+
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            for (let checkbox of checkboxes) {
+                if (checkbox.checked) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // Handle form submissions
+        async function adminLogin() {
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Admin login successful!');
+                    // In a real app, you would store the token and redirect
+                    localStorage.setItem('adminToken', data.token);
+                    localStorage.setItem('adminId', data.adminId);
+                    window.location.href = 'admin.html'; // Redirect to admin dashboard
+                } else {
+                    alert(`Login failed: ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('An error occurred during login.');
+            }
+        }
+
+        async function adminSignup() {
+            const firstName = document.getElementById('adminFirstName').value;
+            const lastName = document.getElementById('adminLastName').value;
+            const phone = document.getElementById('adminPhone').value;
+            const email = document.getElementById('adminSignupEmail').value;
+            const password = document.getElementById('adminSignupPassword').value;
+            const termsCheck = document.getElementById('adminTermsCheck').checked;
+
+            if (!firstName || !lastName || !phone || !email || !password) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            if (!termsCheck) {
+                alert('Please agree to terms and conditions');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/admin/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ firstName, lastName, phone, email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccessPopup();
+                    setTimeout(() => {
+                        showAdminLogin();
+                        closeSuccessPopup();
+                    }, 2000);
+                } else {
+                    alert(`Signup failed: ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Signup error:', error);
+                alert('An error occurred during signup.');
+            }
+        }
+
+        async function userLogin() {
+            const email = document.getElementById('userEmail').value;
+            const password = document.getElementById('userPassword').value;
+
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/user/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('User login successful!');
+                    // In a real app, you would store the token and redirect
+                    localStorage.setItem('userToken', data.token);
+                    localStorage.setItem('userId', data.userId);
+                    window.location.href = 'ecomerce.html'; // Redirect to ecommerce page
+                } else {
+                    alert(`Login failed: ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('An error occurred during login.');
+            }
+        }
+
+        async function userSignup() {
+            const firstName = document.getElementById('userFirstName').value;
+            const lastName = document.getElementById('userLastName').value;
+            const phone = document.getElementById('userPhone').value;
+            const email = document.getElementById('userSignupEmail').value;
+            const password = document.getElementById('userSignupPassword').value;
+            const termsCheck = document.getElementById('userTermsCheck').checked;
+
+            if (!firstName || !lastName || !phone || !email || !password) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            if (!termsCheck) {
+                alert('Please agree to terms and conditions');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/user/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ firstName, lastName, phone, email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccessPopup();
+                    setTimeout(() => {
+                        showUserLogin();
+                        closeSuccessPopup();
+                    }, 2000);
+                } else {
+                    alert(`Signup failed: ${data.message}`);
+                }
+            } catch (error) {
+                console.error('Signup error:', error);
+                alert('An error occurred during signup.');
+            }
+        }
+
+        // Show success popup
+        function showSuccessPopup() {
+            document.getElementById('successPopup').style.display = 'block';
+        }
+
+        // Close success popup
+        function closeSuccessPopup() {
+            document.getElementById('successPopup').style.display = 'none';
+        }
+
+        // Show switch modal
+        function showSwitchModal(portal) {
+            const modal = document.getElementById('switchModal');
+            const title = document.getElementById('switchModalTitle');
+            const yesBtn = document.getElementById('switchYesBtn');
+            const noBtn = document.getElementById('switchNoBtn');
+
+            title.textContent = `Are you changing to ${portal.charAt(0).toUpperCase() + portal.slice(1)} portal?`;
+
+            yesBtn.onclick = function() {
+                switchPortal(portal);
+                modal.style.display = 'none';
+            };
+
+            noBtn.onclick = function() {
+                modal.style.display = 'none';
+            };
+
+            modal.style.display = 'block';
+        }
+
+        // Switch portal
+        function switchPortal(portal) {
+            const adminForm = document.getElementById('adminForm');
+            const userForm = document.getElementById('userForm');
+
+            if (portal === 'admin') {
+                adminForm.classList.remove('inactive');
+                adminForm.classList.add('active');
+                userForm.classList.remove('active');
+                userForm.classList.add('inactive');
+                activePortal = 'admin';
+            } else {
+                userForm.classList.remove('inactive');
+                userForm.classList.add('active');
+                adminForm.classList.remove('active');
+                adminForm.classList.add('inactive');
+                activePortal = 'user';
+            }
+        }
+
+        // Handle side activation
+        document.getElementById('adminHalf').addEventListener('click', function(e) {
+            // Check if click is on the form or its children
+            if (e.target.closest('#adminForm')) {
+                return;
+            }
+
+            if (activePortal !== 'admin') {
+                if (hasFormFieldsFilled('userLoginForm') || hasFormFieldsFilled('userSignupForm')) {
+                    showSwitchModal('admin');
+                } else {
+                    switchPortal('admin');
+                }
+            }
+        });
+
+        document.getElementById('userHalf').addEventListener('click', function(e) {
+            // Check if click is on the form or its children
+            if (e.target.closest('#userForm')) {
+                return;
+            }
+
+            if (activePortal !== 'user') {
+                if (hasFormFieldsFilled('adminLoginForm') || hasFormFieldsFilled('adminSignupForm')) {
+                    showSwitchModal('user');
+                } else {
+                    switchPortal('user');
+                }
+            }
+        });
+
+        // Handle OTP input auto-focus
+        const otpInputs = document.querySelectorAll('.otp-input');
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('keyup', function(e) {
+                if (e.key >= '0' && e.key <= '9') {
+                    if (index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                } else if (e.key === 'Backspace' && index > 0) {
+                    otpInputs[index - 1].focus();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

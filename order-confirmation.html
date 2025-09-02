@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Confirmation - AreKatika Meat App</title>
+
+    <!-- ✅ Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+
+    <!-- ✅ Your Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- Main Content -->
+    <div id="main-content">
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm custom-navbar">
+            <div class="container-fluid d-flex justify-content-around align-items-center">
+
+                <!-- Brand -->
+                <a class="navbar-brand fw-bold text-black" href="index.html">AreKatikaMeat</a>
+
+                <!-- Combined Location + Search -->
+                <div class="input-group" style="max-width: 400px;">
+                    <!-- Location Button -->
+                    <button class="btn btn-outline-maroon" type="button" id="locationBtn">
+                        Enter Location
+                    </button>
+
+                    <!-- Search Input -->
+                    <input type="text" class="form-control border-maroon" placeholder="Search Product Here">
+
+                    <!-- Search Icon -->
+                    <button class="btn btn-maroon" type="button">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex align-items-center">
+                    <a href="index.html" class="btn btn-maroon text-white me-2">Home</a>
+                    <a href="ecommerce.html" class="btn btn-maroon text-white me-2">Shop Now</a>
+                    <a href="ourStores.html" class_="btn btn-outline-maroon">Our Stores</a>
+                </div>
+
+                <!-- Icons -->
+                <div class="d-flex align-items-center">
+                    <a href="auth.html" class="icon-btn me-2"><i class="bi bi-person"></i></a>
+                    <a href="#" class="icon-btn me-2"><i class="bi bi-heart"></i></a>
+                    <a href="cart.html" class="icon-btn"><i class="bi bi-cart"></i></a>
+                </div>
+
+            </div>
+        </nav>
+
+
+        <section class="py-5">
+            <div class="container">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h2 class="mb-4">Order Confirmation</h2>
+                        <p>Thank you for your order!</p>
+                        <div id="order-details">
+                            <!-- Order details will be rendered here -->
+                        </div>
+                        <a href="index.html" class="btn btn-primary mt-4">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <footer class="bg-white text-grey py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Brand Section -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h2 class="footer-brand">Arekatika</h2>
+                <p class="footer-tagline">Your trusted partner for premium fresh goat meat. From farm to fork, we ensure tender, hygienically processed goat meat with the highest quality and freshness in every cut.</p>
+                
+                <!-- Social Media Icons -->
+                <div class="social-icons mt-3">
+                    <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+            
+            <!-- Quick Links Section -->
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="footer-heading">Quick Links</h5>
+                <ul class="list-unstyled footer-links">
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Home</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Shop</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> About Us</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Contact</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Our Stores</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Track Order</a></li>
+                </ul>
+            </div>
+            
+            <!-- Categories Section -->
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="footer-heading">Categories</h5>
+                <ul class="list-unstyled footer-links">
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Primary Cuts</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Organs</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Special Cuts</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Combos & Bulk Packs</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Extras and Addons</a></li>
+                </ul>
+            </div>
+            
+            <!-- Contact Section -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h5 class="footer-heading">Get in Touch</h5>
+                <ul class="list-unstyled contact-info">
+                    <li class="mb-2">
+                        <i class="bi bi-geo-alt-fill me-2"></i>
+                        <span>123 Market Street, Fresh City, FC 12345</span>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-telephone-fill me-2"></i>
+                        <span>+91 98765 43210</span>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-envelope-fill me-2"></i>
+                        <span>info@arekatika.com</span>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-clock-fill me-2"></i>
+                        <span>Mon-Sun: 6 AM - 10 PM</span>
+                    </li>
+                </ul>
+                
+                <!-- Newsletter Subscription -->
+                <div class="newsletter mt-4">
+                    <h5 class="footer-heading">Stay Updated</h5>
+                    <form class="d-flex">
+                        <input type="email" class="form-control me-2" placeholder="Your email">
+                        <button class="btn btn-subscribe" type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Copyright Section -->
+        <div class="border-top border-secondary pt-4 mt-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="copyright mb-0">© 2024 Arekatika Fresh Butcher. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="policy-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Refund Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    </div>
+
+    <!-- ✅ Bootstrap JS Bundle (with Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ✅ Your Custom JS -->
+    <script src="order-confirmation.js"></script>
+</body>
+
+</html>
