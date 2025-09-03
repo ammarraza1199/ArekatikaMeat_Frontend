@@ -15,13 +15,15 @@
 
     <!-- ✅ Your Custom CSS -->
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="chatbot.css" />
 </head>
 
 <body>
 
     <!-- ✅ Content will go here later -->
     <!-- Splash Screen -->
-    <div id="splash" class="splash-screen d-flex align-items-center justify-content-center">
+    <div id="splash" class="splash-screen d-flex flex-column align-items-center justify-content-center">
+        <img src="assets/LOGO_3.jpg" alt="AreKatikaMeat Logo" class="splash-logo">
         <h1 class="splash-title text-white fw-bold">AreKatikaMeat</h1>
     </div>
 
@@ -33,7 +35,7 @@
             <div class="container-fluid d-flex justify-content-around align-items-center">
 
                 <!-- Brand -->
-                <a class="navbar-brand fw-bold text-black">AreKatikaMeat</a>
+                <a class="navbar-brand fw-bold text-black"><img src="assets/LOGO_3.jpg" alt="AreKatikaMeat Logo" style="height: 24px; vertical-align: middle; margin-right: 8px;">AreKatikaMeat</a>
 
                 <!-- Combined Location + Search -->
                 <div class="input-group" style="max-width: 400px;">
@@ -55,12 +57,14 @@
                 <div class="d-flex align-items-center">
                     <a href="index.html" class="btn btn-maroon text-white me-2">Home</a>
                     <a href="ecommerce.html" class="btn btn-maroon text-white me-2">Shop Now</a>
+                    <a href="aboutus.html" class="btn btn-maroon text-white me-2">About Us</a>
                     <a href="ourStores.html" class="btn btn-outline-maroon">Our Stores</a>
                 </div>
 
                 <!-- Icons -->
                 <div class="d-flex align-items-center">
                     <a href="auth.html" class="icon-btn me-2"><i class="bi bi-person"></i></a>
+                    <a href="#" class="icon-btn me-2" id="logout-btn" style="display: none;"><i class="bi bi-box-arrow-right"></i></a>
                     <a href="#" class="icon-btn me-2"><i class="bi bi-heart"></i></a>
                     <a href="cart.html" class="icon-btn"><i class="bi bi-cart"></i></a>
                 </div>
@@ -327,7 +331,7 @@
                 <ul class="list-unstyled contact-info">
                     <li class="mb-2">
                         <i class="bi bi-geo-alt-fill me-2"></i>
-                        <span>123 Market Street, Fresh City, FC 12345</span>
+                        <span>4-6-238/A ESAMIA BAZAR KOTI HYDERABAD , PIN code 50027.</span>
                     </li>
                     <li class="mb-2">
                         <i class="bi bi-telephone-fill me-2"></i>
@@ -396,6 +400,27 @@
 
     <!-- ✅ Your Custom JS -->
     <script src="script.js"></script>
+    <div class="chatbot-container">
+        <div class="chatbot-icon">
+            <i class="bi bi-chat-dots"></i>
+        </div>
+        <div class="chatbot-window">
+            <div class="chatbot-header">
+                <h5>AreKatika Chat</h5>
+                <span class="chatbot-close">&times;</span>
+            </div>
+            <div class="chatbot-body">
+                <!-- Chat messages will be appended here -->
+            </div>
+            <div class="chatbot-footer">
+                <input type="text" class="chatbot-input" placeholder="Type a message...">
+                <button class="chatbot-send">
+                    <i class="bi bi-send"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="chatbot.js"></script>
 </body>
 
 </html>

@@ -1,4 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Logout button logic
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default link behavior
+            localStorage.removeItem('adminId'); // Clear admin session
+            localStorage.removeItem('adminToken'); // Assuming a token might be used
+            window.location.href = 'auth.html'; // Redirect to login page
+        });
+    }
+
     const API_URL = 'http://localhost:3000/api';
     const socket = io('http://localhost:3000');
 
@@ -11,6 +22,53 @@ document.addEventListener("DOMContentLoaded", () => {
     const productModal = new bootstrap.Modal(document.getElementById('product-modal'));
     const productModalTitle = document.getElementById('product-modal-title');
     const productIdInput = document.getElementById('product-id');
+    const productImageUpload = document.getElementById('product-image-upload');
+    const dragDropArea = document.getElementById('drag-drop-area');
+    const productImagePreview = document.getElementById('product-image-preview');
+
+    let currentImageBase64 = null;
+
+    // Helper function to handle image file
+    function handleImageFile(file) {
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                productImagePreview.src = e.target.result;
+                productImagePreview.style.display = 'block';
+                currentImageBase64 = e.target.result; // Store Base64 string
+                console.log('currentImageBase64 set:', currentImageBase64 ? currentImageBase64.substring(0, 50) + '...' : 'null'); // Debug log
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Event Listeners for Image Upload
+    productImageUpload.addEventListener('change', (e) => {
+        handleImageFile(e.target.files[0]);
+    });
+
+    dragDropArea.addEventListener('click', () => {
+        productImageUpload.click();
+    });
+
+    dragDropArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dragDropArea.classList.add('dragover');
+    });
+
+    dragDropArea.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dragDropArea.classList.remove('dragover');
+    });
+
+    dragDropArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dragDropArea.classList.remove('dragover');
+        handleImageFile(e.dataTransfer.files[0]);
+    });
 
     let orders = [];
     let products = [];
@@ -51,9 +109,16 @@ document.addEventListener("DOMContentLoaded", () => {
         ordersTableBody.innerHTML = '';
         orders.forEach(order => {
             const tr = document.createElement('tr');
+
+            // Format items for display
+            const itemsDisplay = order.items.map(item => {
+                return `${item.title} (Qty: ${item.quantity}, ${item.weight})`;
+            }).join('<br>'); // Use <br> for new lines within the cell
+
             tr.innerHTML = `
                 <td>${order.id}</td>
                 <td>${order.userId}</td>
+                <td>${itemsDisplay}</td> <!-- Display items here -->
                 <td>${order.shippingAddress.address}, ${order.shippingAddress.city}</td>
                 <td>₹${order.total}</td>
                 <td>
@@ -111,7 +176,20 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('product-price').value = product.pricePerKg;
         document.getElementById('product-discount').value = product.discount;
         document.getElementById('product-weights').value = product.weights.join(', ');
-        document.getElementById('product-image').value = product.image;
+        // Clear previous image preview
+        productImagePreview.style.display = 'none';
+        productImagePreview.src = '#';
+        currentImageBase64 = null; // Reset Base64 string
+
+        if (product.image) {
+            // If product has an image, display it in preview
+            productImagePreview.src = product.image;
+            productImagePreview.style.display = 'block';
+            // If it's a Base64 string, store it, otherwise it's a URL
+            if (product.image.startsWith('data:image')) {
+                currentImageBase64 = product.image;
+            }
+        }
         document.getElementById('product-quantity').value = product.quantity;
         productModal.show();
     };
@@ -136,30 +214,45 @@ document.addEventListener("DOMContentLoaded", () => {
             pricePerKg: parseFloat(document.getElementById('product-price').value),
             discount: parseFloat(document.getElementById('product-discount').value) || null,
             weights: document.getElementById('product-weights').value.split(',').map(w => w.trim()),
-            image: document.getElementById('product-image').value,
+            // Use currentImageBase64 if a new image was uploaded, otherwise use existing product.image
+            image: currentImageBase64 || (id ? products.find(p => p.id === id).image : null),
             quantity: parseInt(document.getElementById('product-quantity').value)
         };
+        console.log('Sending product data:', productData); // Debug log
 
         try {
+            let response; // Declare response variable
             if (id) {
                 // Update product
-                await fetch(`${API_URL}/admin/products/${id}`, {
+                response = await fetch(`${API_URL}/admin/products/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(productData)
                 });
             } else {
                 // Add new product
-                await fetch(`${API_URL}/admin/products`, {
+                response = await fetch(`${API_URL}/admin/products`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(productData)
                 });
             }
+            const data = await response.json(); // Get response data
+            console.log('Server response:', response.status, data); // Debug log
+
+            if (!response.ok) {
+                alert(`Failed to save product: ${data.message || response.statusText}`);
+            }
+
             productModal.hide();
             getProducts();
+            // Reset image preview and Base64 string after successful save
+            productImagePreview.style.display = 'none';
+            productImagePreview.src = '#';
+            currentImageBase64 = null;
         } catch (error) {
             console.error('Error saving product:', error);
+            alert('An error occurred while saving the product.'); // Add alert for catch block
         }
     });
 

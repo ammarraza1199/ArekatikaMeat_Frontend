@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - AreKatika Meat App</title>
+
+    <!-- ✅ Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+
+    <!-- ✅ Your Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="chatbot.css" />
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm custom-navbar">
+        <div class="container-fluid d-flex justify-content-around align-items-center">
+
+            <!-- Brand -->
+            <a class="navbar-brand fw-bold text-black"><img src="assets/LOGO_3.jpg" alt="AreKatikaMeat Logo" style="height: 24px; vertical-align: middle; margin-right: 8px;">AreKatikaMeat</a>
+
+            <!-- Combined Location + Search -->
+            <div class="input-group" style="max-width: 400px;">
+                <!-- Location Button -->
+                <button class="btn btn-outline-maroon" type="button" id="locationBtn">
+                    Enter Location
+                </button>
+
+                <!-- Search Input -->
+                <input type="text" class="form-control border-maroon" placeholder="Search Product Here">
+
+                <!-- Search Icon -->
+                <button class="btn btn-maroon" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex align-items-center">
+                <a href="index.html" class="btn btn-maroon text-white me-2">Home</a>
+                <a href="ecommerce.html" class="btn btn-maroon text-white me-2">Shop Now</a>
+                <a href="aboutus.html" class="btn btn-maroon text-white me-2">About Us</a>
+                <a href="ourStores.html" class="btn btn-outline-maroon">Our Stores</a>
+            </div>
+
+            <!-- Icons -->
+            <div class="d-flex align-items-center">
+                <a href="auth.html" class="icon-btn me-2"><i class="bi bi-person"></i></a>
+                <a href="#" class="icon-btn me-2" id="logout-btn" style="display: none;"><i class="bi bi-box-arrow-right"></i></a>
+                <a href="#" class="icon-btn me-2"><i class="bi bi-heart"></i></a>
+                <a href="cart.html" class="icon-btn"><i class="bi bi-cart"></i></a>
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="container mt-5 mb-5" style="min-height:60vh;">
+    <h1 class="text-center" data-aos="fade-up">About Us</h1>
+    <p class="text-start" data-aos="fade-up" data-aos-delay="100">Welcome to AreKatika Meat App, your trusted partner for fresh, hygienic, and premium-quality mutton. We go beyond just delivering products — we ensure every cut meets the highest standards of safety, taste, and nutrition. Our mission is to combine tradition with modern practices, offering responsibly sourced mutton that is carefully processed and delivered with care.
+
+With a strong focus on quality assurance, timely delivery, and customer trust, AreKatika Meat App has become a reliable choice for households, restaurants, and bulk buyers. Every order is handled with precision, right from sourcing to packaging, so that you and your family can enjoy the best meat experience every single time.
+
+Thank you for choosing us and being part of the AreKatika family — where freshness, quality, and trust come first!</p>
+
+    <!-- 3 Vertical Cards Section -->
+    <div class="row justify-content-center mb-5">
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <img src="assets/about01.jpg" alt="BBQ" class="card-img-top" style="height:220px;object-fit:cover;border-top-left-radius:16px;border-top-right-radius:16px;">
+          <div class="card-body py-4">
+            <h5 class="fw-bold" style="color:maroon;">Premium Quality</h5>
+            <p class="text-secondary">Handpicked cuts for the best taste and nutrition, delivered fresh to your doorstep.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <img src="assets/about02.jpg" alt="Goat Boneless" class="card-img-top" style="height:220px;object-fit:cover;border-top-left-radius:16px;border-top-right-radius:16px;">
+          <div class="card-body py-4">
+            <h5 class="fw-bold" style="color:maroon;">Hygienic Processing</h5>
+            <p class="text-secondary">Modern facilities and strict standards ensure every order is safe and clean.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="zoom-in" data-aos-delay="300">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <img src="assets/about03.jpg" alt="Family Pack" class="card-img-top" style="height:220px;object-fit:cover;border-top-left-radius:16px;border-top-right-radius:16px;">
+          <div class="card-body py-4">
+            <h5 class="fw-bold" style="color:maroon;">Customer Trust</h5>
+            <p class="text-secondary">Thousands of families and restaurants rely on AreKatika for quality and service.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="text-center" data-aos="fade-right">Our Story</h2>
+    <p class="text-start" data-aos="fade-right" data-aos-delay="100">Founded with a deep passion for quality and service, AreKatika Meat App was established to bring premium mutton directly from trusted sources to our customers. What started as a small initiative has now grown into a recognized name in the meat industry, built on values of honesty, consistency, and customer-first service.
+Over time, we have developed strong partnerships with local farmers and suppliers to ensure that every product we offer is fresh, hygienic, and responsibly sourced. <br />By combining traditional practices with modern processing and delivery systems, we are able to provide our customers with not just meat, but an experience they can trust.
+Our journey is driven by a simple yet powerful belief — that every household deserves access to safe, nutritious, and high-quality mutton. As we continue to grow, our focus remains on expanding our reach, empowering local communities, and delivering excellence with every order.</p>
+    <h2 class="text-center" data-aos="fade-left">Company Statutory Profile</h2>
+    <div>
+      <p class="text-start" data-aos="fade-left" data-aos-delay="100"><strong>Full Name:</strong> Arekatika Meat Udyog Limited (AMUL)</p>
+      <p class="text-start" data-aos="fade-left" data-aos-delay="200"><strong>Company Type:</strong> Public Limited Company (Limited by Shares)</p>
+      <p class="text-start" data-aos="fade-left" data-aos-delay="300"><strong>Date of Incorporation:</strong> 18th August 2025</p>
+      <p class="text-start" data-aos="fade-left" data-aos-delay="400"><strong>CIN:</strong> U01441TS2025PLC202399</p>
+      <p class="text-start" data-aos="fade-left" data-aos-delay="500"><strong>Business Classification:</strong> Sheep & Goat Farming</p>
+    </div>
+
+    <!-- <h2 class="text-center" data-aos="fade-up">Registered Office</h2>
+    <p class="text-start" data-aos="fade-up" data-aos-delay="100">4-6-238/A ESAMIA BAZAR KOTI,<br> Hyderabad –50027, Telangana</p>
+    <p class="text-start" data-aos="fade-up" data-aos-delay="200"><strong>Email:</strong> arekatika@il.com<br><strong>Phone:</strong> +91 7923456730 / +91 9334567809</p> -->
+
+    <!-- <h2 class="text-center" data-aos="fade-right">Capital Structure</h2>
+    <ul class="text-start" data-aos="fade-right" data-aos-delay="100">
+      <li>Authorized Share Capital: ₹5,00,00,000</li>
+      <li>Subscribed & Paid-Up Share Capital: ₹5,00,00,000 (fully subscribed)</li>
+    </ul> -->
+
+    <h2 class="text-center" data-aos="fade-left">Board of Directors & Promoters</h2>
+    <div class="row justify-content-center" style="margin-bottom:2rem;">
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <div class="card-body py-4">
+            <h5 class="fw-bold mb-2" style="color:maroon;">Mr. Sanjay Raj Jamalpur</h5>
+            <p class="mb-0 text-secondary">Director & Promoter</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <div class="card-body py-4">
+            <h5 class="fw-bold mb-2" style="color:maroon;">Mr. Pavan Raj Shri Jamalpur</h5>
+            <p class="mb-0 text-secondary">Director & Promoter</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="zoom-in" data-aos-delay="300">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <div class="card-body py-4">
+            <h5 class="fw-bold mb-2" style="color:maroon;">Ms. Neelima Jamalpur</h5>
+            <p class="mb-0 text-secondary">Director & Promoter</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="zoom-in" data-aos-delay="400">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <div class="card-body py-4">
+            <h5 class="fw-bold mb-2" style="color:maroon;">Mr. Chandra Sekhar Nizamkari</h5>
+            <p class="mb-0 text-secondary">Director & Promoter</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="zoom-in" data-aos-delay="500">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <div class="card-body py-4">
+            <h5 class="fw-bold mb-2" style="color:maroon;">Ms. Anita Palangthod</h5>
+            <p class="mb-0 text-secondary">Director & Promoter</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="zoom-in" data-aos-delay="600">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <div class="card-body py-4">
+            <h5 class="fw-bold mb-2" style="color:maroon;">Ms. Reshmitha Raj Jamalpur</h5>
+            <p class="mb-0 text-secondary">Director & Promoter</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="zoom-in" data-aos-delay="700">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <div class="card-body py-4">
+            <h5 class="fw-bold mb-2" style="color:maroon;">Mr. Shlok Raj Jamalpur</h5>
+            <p class="mb-0 text-secondary">Director & Promoter</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="text-center" data-aos="fade-up">Our Objectives</h2>
+    <div class="row justify-content-center" style="margin-bottom:2rem;">
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <img src="assets/obj01.png" alt="Objective Image" class="card-img-top" style="height:160px;object-fit:cover;border-top-left-radius:16px;border-top-right-radius:16px;">
+          <div class="card-body py-4">
+            <p class="fw-bold mb-0" style="color:maroon;">Sheep & goat rearing, breeding, slaughtering, and processing.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <img src="assets/obj02.png" alt="Objective Image" class="card-img-top" style="height:160px;object-fit:cover;border-top-left-radius:16px;border-top-right-radius:16px;">
+          <div class="card-body py-4">
+            <p class="fw-bold mb-0" style="color:maroon;">Establishment of modern meat processing facilities in Telangana.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <img src="assets/obj03.png" alt="Objective Image" class="card-img-top" style="height:160px;object-fit:cover;border-top-left-radius:16px;border-top-right-radius:16px;">
+          <div class="card-body py-4">
+            <p class="fw-bold mb-0" style="color:maroon;">Adoption of AI-driven quality systems.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="400">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <img src="assets/obj05.png" alt="Objective Image" class="card-img-top" style="height:160px;object-fit:cover;border-top-left-radius:16px;border-top-right-radius:16px;">
+          <div class="card-body py-4">
+            <p class="fw-bold mb-0" style="color:maroon;">Value-added products: ready-to-cook, casings, leather, etc.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="500">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <img src="assets/obj04.png" alt="Objective Image" class="card-img-top" style="height:160px;object-fit:cover;border-top-left-radius:16px;border-top-right-radius:16px;">
+          <div class="card-body py-4">
+            <p class="fw-bold mb-0" style="color:maroon;">Training & empowerment of the Arekatika community.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="600">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <img src="assets/obj06.jpg" alt="Objective Image" class="card-img-top" style="height:160px;object-fit:cover;border-top-left-radius:16px;border-top-right-radius:16px;">
+          <div class="card-body py-4">
+            <p class="fw-bold mb-0" style="color:maroon;">Expansion to urban markets and exports (UAE, Iran, Jordan).</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="700">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <img src="assets/obj07.webp" alt="Objective Image" class="card-img-top" style="height:160px;object-fit:cover;border-top-left-radius:16px;border-top-right-radius:16px;">
+          <div class="card-body py-4">
+            <p class="fw-bold mb-0" style="color:maroon;">Eco-friendly waste management.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="800">
+        <div class="card shadow-sm h-100 text-center border-0" style="border-radius:16px;">
+          <img src="assets/obj08.png" alt="Objective Image" class="card-img-top" style="height:160px;object-fit:cover;border-top-left-radius:16px;border-top-right-radius:16px;">
+          <div class="card-body py-4">
+            <p class="fw-bold mb-0" style="color:maroon;">Partnerships with APEDA, MOFPI, NMRI, AIIMS Hyderabad.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <h2 class="text-center" data-aos="fade-right">Compliance & Regulatory</h2>
+    <p class="text-start" data-aos="fade-right" data-aos-delay="100">The company is incorporated under MCA, with PAN & TAN obtained, ROC filings completed, and sectoral approvals like FSSAI, Halal Certification, and APEDA Registration required for operations.</p> -->
+
+    <h2 class="text-center" data-aos="fade-up">Contact Us</h2>
+    <p class="text-start" data-aos="fade-up" data-aos-delay="100">Email: arekatika@gmail.com<br>Phone: +91 98765 43210
+</p>
+  </div>
+
+<footer class="bg-white text-grey py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Brand Section -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h2 class="footer-brand">Arekatika</h2>
+                <p class="footer-tagline">Your trusted partner for premium fresh goat meat. From farm to fork, we ensure tender, hygienically processed goat meat with the highest quality and freshness in every cut.</p>
+                
+                <!-- Social Media Icons -->
+                <div class="social-icons mt-3">
+                    <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+            
+            <!-- Quick Links Section -->
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="footer-heading">Quick Links</h5>
+                <ul class="list-unstyled footer-links">
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Home</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Shop</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> About Us</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Contact</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Our Stores</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Track Order</a></li>
+                </ul>
+            </div>
+            
+            <!-- Categories Section -->
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h5 class="footer-heading">Categories</h5>
+                <ul class="list-unstyled footer-links">
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Primary Cuts</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Organs</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Special Cuts</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Combos & Bulk Packs</a></li>
+                    <li><a href="#"><i class="bi bi-chevron-right"></i> Extras and Addons</a></li>
+                </ul>
+            </div>
+            
+            <!-- Contact Section -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h5 class="footer-heading">Get in Touch</h5>
+                <ul class="list-unstyled contact-info">
+                    <li class="mb-2">
+                        <i class="bi bi-geo-alt-fill me-2"></i>
+                        <span>4-6-238/A ESAMIA BAZAR KOTI HYDERABAD , PIN code 50027.</span>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-telephone-fill me-2"></i>
+                        <span>+91 98765 43210</span>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-envelope-fill me-2"></i>
+                        <span>info@arekatika.com</span>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-clock-fill me-2"></i>
+                        <span>Mon-Sun: 6 AM - 10 PM</span>
+                    </li>
+                </ul>
+                
+                <!-- Newsletter Subscription -->
+                <div class="newsletter mt-4">
+                    <h5 class="footer-heading">Stay Updated</h5>
+                    <form class="d-flex">
+                        <input type="email" class="form-control me-2" placeholder="Your email">
+                        <button class="btn btn-subscribe" type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Copyright Section -->
+        <div class="border-top border-secondary pt-4 mt-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="copyright mb-0">© 2024 Arekatika Fresh Butcher. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="policy-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Refund Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <!-- ✅ Bootstrap JS Bundle (with Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ✅ Your Custom JS -->
+    <script src="script.js"></script>
+    <div class="chatbot-container">
+        <div class="chatbot-icon">
+            <i class="bi bi-chat-dots"></i>
+        </div>
+        <div class="chatbot-window">
+            <div class="chatbot-header">
+                <h5>AreKatika Chat</h5>
+                <span class="chatbot-close">&times;</span>
+            </div>
+            <div class="chatbot-body">
+                <!-- Chat messages will be appended here -->
+            </div>
+            <div class="chatbot-footer">
+                <input type="text" class="chatbot-input" placeholder="Type a message...">
+                <button class="chatbot-send">
+                    <i class="bi bi-send"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="chatbot.js"></script>
+</body>
+
+</html>

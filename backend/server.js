@@ -4,6 +4,7 @@ const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
 const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
@@ -17,7 +18,8 @@ const PORT = process.env.PORT || 3000;
 const DB_FILE = './db.json';
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(express.static(path.join(__dirname, '../assets')));
 
 // Function to read the database
 const readDB = () => {
@@ -28,6 +30,36 @@ const readDB = () => {
 // Function to write to the database
 const writeDB = (data) => {
   fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+};
+
+// Function to save Base64 image to file
+const saveBase64Image = (base64String, productId) => {
+    if (!base64String || !base64String.startsWith('data:image')) {
+        return base64String; // Not a Base64 image, return as is (might be a URL)
+    }
+
+    const matches = base64String.match(/^data:image\/([A-Za-z-+\/]+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) {
+        throw new Error('Invalid Base64 image string');
+    }
+
+    const imageType = matches[1];
+    console.log('Extracted image type:', imageType); // Debug log
+    const imageData = matches[2];
+    const buffer = Buffer.from(imageData, 'base64');
+
+    const filename = `product_${productId}_${Date.now()}.${imageType}`;
+    const uploadDir = path.join(__dirname, '../assets/uploads'); // Assuming uploads folder in assets
+
+    // Create uploads directory if it doesn't exist
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    const filePath = path.join(uploadDir, filename);
+    fs.writeFileSync(filePath, buffer);
+
+    return `uploads/${filename}`; // Return relative path for frontend (relative to assets folder)
 };
 
 // --- AUTHENTICATION ENDPOINTS ---
@@ -161,6 +193,7 @@ app.post('/api/cart/items', (req, res) => {
     const cartItem = {
         id: `cart${Date.now()}`,
         productId,
+        title: product.title, // Add the product title here
         quantity,
         weight,
         price: product.pricePerKg,
@@ -236,12 +269,21 @@ app.post('/api/orders/checkout', (req, res) => {
         return res.status(400).json({ message: 'Cart is empty' });
     }
 
-    const total = user.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    // Enrich cart items with product titles
+    const enrichedItems = user.cart.map(cartItem => {
+        const product = db.products.find(p => p.id === cartItem.productId);
+        return {
+            ...cartItem,
+            title: product ? product.title : 'Unknown Product' // Add title, handle case where product might not be found
+        };
+    });
+
+    const total = enrichedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
     const newOrder = {
         id: `order${Date.now()}`,
         userId,
-        items: user.cart,
+        items: enrichedItems,
         total,
         shippingAddress,
         paymentMethod,
@@ -322,8 +364,20 @@ app.put('/api/admin/orders/:orderId/status', (req, res) => {
 
 // Add a new product
 app.post('/api/admin/products', (req, res) => {
-    const { title, desc, pricePerKg, discount, weights, image, quantity } = req.body;
+    let { title, desc, pricePerKg, discount, weights, image, quantity } = req.body;
+    console.log('Received image data:', image ? image.substring(0, 50) + '...' : 'null');
     const db = readDB();
+
+    // Save image if it's a Base64 string
+    if (image && image.startsWith('data:image')) {
+        try {
+            image = saveBase64Image(image, `prod${Date.now()}`);
+            console.log('Image path after saving:', image);
+        } catch (error) {
+            console.error('Error saving image:', error);
+            return res.status(500).json({ message: 'Failed to save image' });
+        }
+    }
 
     const newProduct = {
         id: `prod${Date.now()}`,
@@ -335,9 +389,11 @@ app.post('/api/admin/products', (req, res) => {
         image,
         quantity
     };
+    console.log('Product object before saving to DB:', newProduct);
 
     db.products.push(newProduct);
     writeDB(db);
+    console.log('DB written successfully.');
 
     io.emit('productUpdate');
 
@@ -347,12 +403,24 @@ app.post('/api/admin/products', (req, res) => {
 // Update a product
 app.put('/api/admin/products/:id', (req, res) => {
     const { id } = req.params;
-    const { title, desc, pricePerKg, discount, weights, image, quantity } = req.body;
+    let { title, desc, pricePerKg, discount, weights, image, quantity } = req.body;
+    console.log('Received image data for update:', image ? image.substring(0, 50) + '...' : 'null');
     const db = readDB();
     const productIndex = db.products.findIndex(p => p.id === id);
 
     if (productIndex === -1) {
         return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Save image if it's a Base64 string
+    if (image && image.startsWith('data:image')) {
+        try {
+            image = saveBase64Image(image, id);
+            console.log('Image path after saving for update:', image);
+        } catch (error) {
+            console.error('Error saving image for update:', error);
+            return res.status(500).json({ message: 'Failed to save image' });
+        }
     }
 
     const updatedProduct = {
@@ -365,9 +433,11 @@ app.put('/api/admin/products/:id', (req, res) => {
         image,
         quantity
     };
+    console.log('Product object before saving to DB for update:', updatedProduct);
 
     db.products[productIndex] = updatedProduct;
     writeDB(db);
+    console.log('DB written successfully for update.');
 
     io.emit('productUpdate');
 

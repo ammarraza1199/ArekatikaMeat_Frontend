@@ -26,16 +26,25 @@ async function renderBestSelling() {
                 col.className = "col-md-3";
 
                 const defaultWeight = item.weights[0];
-                const defaultWeightValue = parseFloat(defaultWeight) || 1;
-                let defaultPrice = item.pricePerKg * defaultWeightValue;
-                if (item.discount) {
-                    defaultPrice = Math.round(defaultPrice * (1 - item.discount / 100));
+                const defaultWeightValue = parseFloat(defaultWeight.replace(/[^0-9.]/g, ''));
+                const unit = defaultWeight.replace(/[^a-zA-Z]/g, '');
+
+                let weightInKg = defaultWeightValue;
+                if (unit.toLowerCase() === 'g') {
+                    weightInKg = defaultWeightValue / 1000;
                 }
+
+                let defaultPrice = item.pricePerKg * weightInKg;
+                if (item.discount) {
+                    defaultPrice = Math.ceil(defaultPrice * (1 - item.discount / 100));
+                }
+
+                const imageUrl = getImageUrl(item.image);
 
                 col.innerHTML = `
                     <div class="card h-100 product-card">
                         <div class="product-image-container">
-                            <img src="${item.image}" class="product-image" alt="${item.title}">
+                            <img src="${imageUrl}" class="product-image" alt="${item.title}">
                             ${item.discount ? `<span class="discount-badge">${item.discount}% OFF</span>` : ""}
                             <button class="wishlist-btn">
                                 <i class="bi bi-heart"></i>
@@ -55,9 +64,9 @@ async function renderBestSelling() {
                             <div class="price-add-container">
                                 <div class="price">
                                     ${item.discount ?
-                                        `<span class="original-price">₹${item.pricePerKg * defaultWeightValue}</span>
+                                        `<span class="original-price">₹${Math.ceil(item.pricePerKg * weightInKg)}</span>
                                          <span class="discounted-price">₹${defaultPrice}</span>` :
-                                        `<span class="regular-price">₹${defaultPrice}</span>`
+                                        `<span class="regular-price">₹${Math.ceil(defaultPrice)}</span>`
                                     }
                                 </div>
                                 <button class="add-btn" onclick="addToCart('${item.id}')">Add</button>
@@ -83,6 +92,20 @@ async function renderBestSelling() {
     }
 }
 
+function getImageUrl(imagePath) {
+    if (!imagePath) return '';
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+        return imagePath;
+    }
+
+    let finalPath = imagePath;
+    if (finalPath.startsWith('assets/')) {
+        finalPath = finalPath.substring('assets/'.length);
+    }
+
+    return `http://localhost:3000/${finalPath}`;
+}
+
 // Function to update price dynamically
 function updatePrice(button, basePrice, discount, weight) {
     const cardBody = button.closest(".card-body");
@@ -95,17 +118,24 @@ function updatePrice(button, basePrice, discount, weight) {
     });
     button.classList.add("active");
 
-    const weightValue = parseFloat(selectedWeight) || 1;
-    let price = basePrice * weightValue;
+    const weightValue = parseFloat(selectedWeight.replace(/[^0-9.]/g, ''));
+    const unit = selectedWeight.replace(/[^a-zA-Z]/g, '');
+
+    let weightInKg = weightValue;
+    if (unit.toLowerCase() === 'g') {
+        weightInKg = weightValue / 1000;
+    }
+
+    let price = basePrice * weightInKg;
 
     if (discount) {
-        const discountedPrice = Math.round(price * (1 - discount / 100));
+        const discountedPrice = Math.ceil(price * (1 - discount / 100));
         priceDiv.innerHTML = `
-            <span class="original-price">₹${price}</span>
+            <span class="original-price">₹${Math.ceil(price)}</span>
             <span class="discounted-price">₹${discountedPrice}</span>
         `;
     } else {
-        priceDiv.innerHTML = `<span class="regular-price">₹${price}</span>`;
+        priceDiv.innerHTML = `<span class="regular-price">₹${Math.ceil(price)}</span>`;
     }
 }
 

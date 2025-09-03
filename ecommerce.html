@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Order Confirmation - AreKatika Meat App</title>
+    <title>Shop Now - AreKatika Meat App</title>
 
     <!-- ✅ Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -63,69 +63,14 @@
             </div>
         </nav>
 
-
-        <section class="order-tracking-container py-5">
+        <section class="py-5">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <div class="order-summary-card text-center">
-                            <h2 class="mb-3">Order Confirmed!</h2>
-                            <p class="lead">Thank you for your purchase. Your order is being processed.</p>
-                            <p class="order-id-display">Order ID: <span id="order-id-display">#LOADING</span></p>
-                            <p class="estimated-delivery">Estimated Delivery: <strong id="estimated-delivery-time">Loading...</strong></p>
-                        </div>
-
-                        <div class="tracking-details-card mt-4">
-                            <h4>Order Tracking</h4>
-                            <div class="map-placeholder">
-                                <!-- Static Google Map Placeholder -->
-                                <img src="https://maps.googleapis.com/maps/api/staticmap?center=Hyderabad,India&zoom=12&size=600x300&markers=color:red%7Clabel:A%7CHyderabad,India&key=YOUR_API_KEY" alt="Order Tracking Map">
-                            </div>
-
-                            <div class="progress-track">
-                                <ul id="tracking-list" class="list-unstyled d-flex justify-content-between">
-                                    <li class="step" id="step-placed">
-                                        <span class="icon"><i class="bi bi-check-circle"></i></span>
-                                        Order Placed
-                                    </li>
-                                    <li class="step" id="step-packed">
-                                        <span class="icon"><i class="bi bi-box"></i></span>
-                                        Packed
-                                    </li>
-                                    <li class="step" id="step-shipped">
-                                        <span class="icon"><i class="bi bi-truck"></i></span>
-                                        Shipped
-                                    </li>
-                                    <li class="step" id="step-on-the-way">
-                                        <span class="icon"><i class="bi bi-geo-alt"></i></span>
-                                        On the Way
-                                    </li>
-                                    <li class="step" id="step-delivered">
-                                        <span class="icon"><i class="bi bi-house"></i></span>
-                                        Delivered
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="tracking-details-card mt-4">
-                            <h4>Order Details</h4>
-                            <div id="order-items-details">
-                                <!-- Order items will be rendered here -->
-                            </div>
-                            <div class="order-total-display" id="order-total-display">
-                                <!-- Order total will be rendered here -->
-                            </div>
-                        </div>
-
-                        <div class="text-center mt-4">
-                            <a href="index.html" class="btn btn-maroon btn-lg">Continue Shopping</a>
-                        </div>
-                    </div>
+                <h2 class="text-center mb-4">All Products</h2>
+                <div id="product-list" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <!-- Products will be rendered here by JavaScript -->
                 </div>
             </div>
         </section>
-
 
         <footer class="bg-white text-grey py-5">
     <div class="container">
@@ -227,7 +172,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- ✅ Your Custom JS -->
-    <script src="order-confirmation.js"></script>
+    <script src="ecommerce.js"></script>
 </body>
 
 </html>

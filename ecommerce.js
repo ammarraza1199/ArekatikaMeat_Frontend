@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const productGrid = document.getElementById("product-grid");
+    const productGrid = document.getElementById("product-list");
     const API_URL = 'http://localhost:3000/api';
     let products = [];
 
@@ -26,10 +26,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 defaultPrice = Math.round(defaultPrice * (1 - item.discount / 100));
             }
 
+            const imageUrl = getImageUrl(item.image);
+
             col.innerHTML = `
                 <div class="card h-100 product-card">
                     <div class="product-image-container">
-                        <img src="${item.image}" class="product-image" alt="${item.title}">
+                        <img src="${imageUrl}" class="product-image" alt="${item.title}">
                         ${item.discount ? `<span class="discount-badge">${item.discount}% OFF</span>` : ""}
                         <button class="wishlist-btn">
                             <i class="bi bi-heart"></i>
@@ -61,6 +63,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             `;
             productGrid.appendChild(col);
         });
+    }
+
+    function getImageUrl(imagePath) {
+        if (!imagePath) return '';
+        if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+            return imagePath;
+        }
+
+        let finalPath = imagePath;
+        if (finalPath.startsWith('assets/')) {
+            finalPath = finalPath.substring('assets/'.length);
+        }
+
+        return `http://localhost:3000/${finalPath}`;
     }
 
     window.updatePrice = function(button, basePrice, discount, weight) {

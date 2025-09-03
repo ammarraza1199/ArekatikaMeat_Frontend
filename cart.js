@@ -137,6 +137,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+        if (paymentMethod === 'UPI') {
+            const upiModal = new bootstrap.Modal(document.getElementById('upi-payment-modal'));
+            upiModal.show();
+
+            document.querySelectorAll('#upi-app-selection button').forEach(button => {
+                button.addEventListener('click', () => {
+                    document.getElementById('upi-app-selection').classList.add('d-none');
+                    document.getElementById('qr-code-container').classList.remove('d-none');
+
+                    setTimeout(() => {
+                        const paymentStatus = document.getElementById('payment-status');
+                        paymentStatus.innerHTML = '<p class="text-success">Payment Successful!</p>';
+                        setTimeout(async () => {
+                            await placeOrder(userId, paymentMethod);
+                        }, 1000);
+                    }, 4000);
+                });
+            });
+        } else {
+            placeOrder(userId, paymentMethod);
+        }
+    });
+
+    async function placeOrder(userId, paymentMethod) {
         const shippingAddress = {
             fullName: "Test User",
             address: "123 Test Street",
@@ -155,8 +180,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (response.ok) {
                 const order = await response.json();
-                alert('Order placed successfully!');
-                window.location.href = `order-confirmation.html?orderId=${order.id}`;
+                console.log('Order placed successfully:', order);
+                console.log('Attempting redirection...');
+                setTimeout(() => {
+                    window.location.href = `order-confirmation.html?orderId=${order.id}`;
+                }, 0);
             } else {
                 const data = await response.json();
                 alert(`Failed to place order: ${data.message}`);
@@ -165,7 +193,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.error('Error placing order:', error);
             alert('An error occurred while placing the order.');
         }
-    });
+    }
 
     getCart();
 });

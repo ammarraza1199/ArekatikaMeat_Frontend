@@ -27,12 +27,12 @@
             <div class="container-fluid d-flex justify-content-around align-items-center">
 
                 <!-- Brand -->
-                <a class="navbar-brand fw-bold text-black" href="index.html">AreKatikaMeat - Admin</a>
+                <a class="navbar-brand fw-bold text-black" href="index.html"><img src="assets/LOGO_3.jpg" alt="AreKatikaMeat Logo" style="height: 24px; vertical-align: middle; margin-right: 8px;">AreKatikaMeat - Admin</a>
 
                 <!-- Buttons -->
                 <div class="d-flex align-items-center">
                     <a href="index.html" class="btn btn-maroon text-white me-2">Home</a>
-                    <a href="auth.html" class="icon-btn me-2"><i class="bi bi-box-arrow-right"></i></a>
+                    <a href="#" class="icon-btn me-2" id="logout-btn"><i class="bi bi-box-arrow-right"></i></a>
                 </div>
 
             </div>
@@ -82,6 +82,7 @@
                                 <tr>
                                     <th>Order ID</th>
                                     <th>User</th>
+                                    <th>Items</th>
                                     <th>Address</th>
                                     <th>Total</th>
                                     <th>Status</th>
@@ -155,8 +156,12 @@
                             <input type="text" class="form-control" id="product-weights" required>
                         </div>
                         <div class="mb-3">
-                            <label for="product-image" class="form-label">Image URL</label>
-                            <input type="text" class="form-control" id="product-image" required>
+                            <label for="product-image-upload" class="form-label">Product Image</label>
+                            <input type="file" class="form-control" id="product-image-upload" accept="image/*">
+                            <div class="mt-2 p-3 border rounded text-center" id="drag-drop-area" style="border-style: dashed;">
+                                Drag & Drop Image Here or Click to Upload
+                            </div>
+                            <img id="product-image-preview" src="#" alt="Image Preview" class="img-thumbnail mt-2" style="display: none; max-width: 100px; max-height: 100px;">
                         </div>
                         <div class="mb-3">
                             <label for="product-quantity" class="form-label">Quantity</label>
