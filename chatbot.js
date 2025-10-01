@@ -11,7 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
         'how to buy the leg piece': 'To buy a leg piece, go to the "Shop Now" page, find the "Leg Piece" product, and click "Add to Cart". Then, go to your cart and proceed to checkout.',
         'how to order': 'You can order by going to the "Shop Now" page, selecting the products you want, adding them to your cart, and then proceeding to checkout.',
         'what are your store hours': 'Our store hours are Mon-Sun: 6 AM - 10 PM.',
-        'default': 'I\'m sorry, I don\'t understand. Can you please rephrase your question? You can ask me about how to order, our products, or our store hours.'
+        'delivery options': 'We offer same-day delivery for orders placed before 2 PM.',
+        'payment methods': 'We accept UPI and Cash on Delivery.',
+        'return policy': 'We have a strict quality control process. If you are not satisfied with your order, please contact us within 24 hours for a resolution.',
+        'contact information': 'You can reach us at arekatika@gmail.com or call us at +91 98765 43210.',
+        'default': 'I\'m sorry, I don\'t understand. Can you please rephrase your question? You can ask me about how to order, our products, our store hours, delivery options, payment methods, return policy, or contact information.'
     };
 
     chatbotIcon.addEventListener('click', () => {

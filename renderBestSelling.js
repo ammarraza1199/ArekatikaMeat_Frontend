@@ -2,7 +2,7 @@ async function renderBestSelling() {
     const carouselInner = document.querySelector("#bestSellingCarousel .carousel-inner");
     const itemsPerSlide = 4;
     let bestSelling = [];
-    const API_URL = 'http://localhost:3000/api';
+    const API_URL = 'https://arekatikameat-backend1.onrender.com/api';
 
     try {
         const response = await fetch(`${API_URL}/products`);
@@ -103,7 +103,7 @@ function getImageUrl(imagePath) {
         finalPath = finalPath.substring('assets/'.length);
     }
 
-    return `http://localhost:3000/${finalPath}`;
+    return `https://arekatikameat-backend1.onrender.com/${finalPath}`;
 }
 
 // Function to update price dynamically
@@ -147,7 +147,7 @@ async function addToCart(productId) {
         return;
     }
 
-    const API_URL = 'http://localhost:3000/api';
+    const API_URL = 'https://arekatikameat-backend1.onrender.com/api';
     const response = await fetch(`${API_URL}/products/${productId}`);
     const product = await response.json();
     const selectedWeight = product.weights[0]; // default to first weight for now

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const placeOrderBtn = document.getElementById("place-order-btn");
-    const API_URL = 'http://localhost:3000/api';
+    const API_URL = 'https://arekatikameat-backend1.onrender.com/api';
 
     placeOrderBtn.addEventListener("click", async () => {
         const userId = localStorage.getItem('userId');

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const productGrid = document.getElementById("product-list");
-    const API_URL = 'http://localhost:3000/api';
+    const API_URL = 'https://arekatikameat-backend1.onrender.com/api';
     let products = [];
 
     async function getProducts() {
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             finalPath = finalPath.substring('assets/'.length);
         }
 
-        return `http://localhost:3000/${finalPath}`;
+        return `https://arekatikameat-backend1.onrender.com/${finalPath}`;
     }
 
     window.updatePrice = function(button, basePrice, discount, weight) {

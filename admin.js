@@ -10,8 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    const API_URL = 'http://localhost:3000/api';
-    const socket = io('http://localhost:3000');
+    const API_URL = 'https://arekatikameat-backend1.onrender.com/api';
+    const socket = io('https://arekatikameat-backend1.onrender.com');
 
     const totalOrdersEl = document.getElementById('total-orders');
     const itemsPackedEl = document.getElementById('items-packed');

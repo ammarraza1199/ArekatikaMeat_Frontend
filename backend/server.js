@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -5,6 +6,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const fs = require('fs');
 const path = require('path');
+const { Cashfree } = require('cashfree-pg');
 
 const app = express();
 const server = http.createServer(app);
@@ -19,7 +21,18 @@ const DB_FILE = './db.json';
 
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
+app.use(express.static(path.join(__dirname, '..'))); // Serve files from project root
 app.use(express.static(path.join(__dirname, '../assets')));
+
+const providedEnv = (process.env.CASHFREE_ENV || '').toUpperCase();
+const inferredEnv = (process.env.CASHFREE_SECRET_KEY || '').toLowerCase().includes('test') ? 'SANDBOX' : 'PRODUCTION';
+const cashfreeEnvironment = (providedEnv === 'SANDBOX' || providedEnv === 'PRODUCTION') ? providedEnv : inferredEnv;
+console.log('Cashfree environment:', cashfreeEnvironment);
+const cashfree = new Cashfree({
+  "XClientId": process.env.CASHFREE_APP_ID,
+  "XClientSecret": process.env.CASHFREE_SECRET_KEY,
+  "XEnvironment": cashfreeEnvironment,
+});
 
 // Function to read the database
 const readDB = () => {
@@ -254,9 +267,8 @@ app.delete('/api/cart/items/:itemId', (req, res) => {
 
 // --- ORDER ENDPOINTS ---
 
-// Create a new order
 app.post('/api/orders/checkout', (req, res) => {
-    const { userId, shippingAddress, paymentMethod } = req.body;
+    const { userId, shippingAddress, paymentMethod, total } = req.body; // Get total from req.body
     const db = readDB();
     const userIndex = db.users.findIndex(u => u.id === userId);
 
@@ -269,25 +281,24 @@ app.post('/api/orders/checkout', (req, res) => {
         return res.status(400).json({ message: 'Cart is empty' });
     }
 
-    // Enrich cart items with product titles
+    // Enrich cart items with product titles (still needed for order details)
     const enrichedItems = user.cart.map(cartItem => {
         const product = db.products.find(p => p.id === cartItem.productId);
         return {
             ...cartItem,
-            title: product ? product.title : 'Unknown Product' // Add title, handle case where product might not be found
+            title: product ? product.title : 'Unknown Product'
         };
     });
 
-    const total = enrichedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
+    // Use the total sent from the frontend
     const newOrder = {
         id: `order${Date.now()}`,
         userId,
         items: enrichedItems,
-        total,
+        total, // Use the total from req.body
         shippingAddress,
         paymentMethod,
-        status: 'Order Placed',
+        status: paymentMethod === 'UPI' ? 'Pending' : 'Order Placed',
         createdAt: new Date().toISOString()
     };
 
@@ -333,6 +344,72 @@ app.get('/api/orders/:orderId/track', (req, res) => {
 
     // In a real app, you would have more sophisticated tracking logic
     res.json({ orderId: order.id, status: order.status });
+});
+
+// --- PAYMENT ENDPOINTS ---
+
+app.post('/api/payment/create-order', async (req, res) => {
+    try {
+        const { amount, userId, orderId } = req.body;
+
+        const request = {
+            "order_amount": amount,
+            "order_currency": "INR",
+            "order_id": orderId,
+            "customer_details": {
+                "customer_id": userId,
+                "customer_phone": "9000000000"
+            },
+            "order_meta": {
+                "return_url": `https://arekatikameat-backend1.onrender.com/api/payment/success?order_id=${orderId}`
+            }
+        };
+
+        const response = await cashfree.PGCreateOrder("2023-08-01", request);
+        if (response?.status !== 200) {
+            console.error('Cashfree create order non-200:', response?.status, response?.data);
+        }
+        const data = response?.data || {};
+
+        // Derive a payment link for redirect from payment_session_id
+        const sessionId = data.payment_session_id;
+        const baseUrl = cashfreeEnvironment === 'PRODUCTION'
+          ? 'https://payments.cashfree.com/order/#'
+          : 'https://payments-test.cashfree.com/order/#';
+        const payment_link = sessionId ? `${baseUrl}${sessionId}` : undefined;
+
+        res.json({ ...data, payment_link });
+    } catch (error) {
+        const cfErrorData = error?.response?.data || error?.message || error;
+        console.error("Error creating payment order:", cfErrorData);
+        res.status(500).json({ message: "Failed to create payment order", error: cfErrorData });
+    }
+});
+
+app.get('/api/payment/success', async (req, res) => {
+    try {
+        const { order_id } = req.query;
+        const db = readDB();
+        const orderIndex = db.orders.findIndex(o => o.id === order_id);
+
+        if (orderIndex === -1) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+
+        const response = await cashfree.PGOrderFetchPayments("2023-08-01", order_id);
+
+        if (response.data[0].payment_status === "SUCCESS") {
+            db.orders[orderIndex].status = "Paid";
+            writeDB(db);
+            io.emit('orderStatusUpdate', { orderId: order_id, status: "Paid" });
+            res.redirect(`/order-confirmation.html?orderId=${order_id}`);
+        } else {
+            res.redirect(`/order-confirmation.html?orderId=${order_id}&error=payment-failed`);
+        }
+    } catch (error) {
+        console.error("Error handling payment success:", error);
+        res.status(500).json({ message: "Failed to handle payment success" });
+    }
 });
 
 // --- ADMIN ENDPOINTS ---

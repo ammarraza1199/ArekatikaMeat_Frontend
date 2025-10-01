@@ -19,9 +19,11 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.chatbot-icon i {
-    color: white;
-    font-size: 28px;
+.chatbot-goat-icon {
+    width: 40px; /* Adjust size as needed */
+    height: 40px; /* Adjust size as needed */
+    border-radius: 50%; /* Make it round */
+    object-fit: cover; /* Ensure image covers the area */
 }
 
 .chatbot-window {

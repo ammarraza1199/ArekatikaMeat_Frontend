@@ -2,9 +2,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     const cartContainer = document.getElementById("cart-container");
     const cartTotalEl = document.getElementById("cart-total");
     const placeOrderBtn = document.getElementById("place-order-btn");
-    const API_URL = 'http://localhost:3000/api';
+    const couponCodeInput = document.getElementById("coupon-code");
+    const applyCouponBtn = document.getElementById("apply-coupon-btn");
+    const API_URL = 'https://arekatikameat-backend1.onrender.com/api';
     let cart = [];
     let products = [];
+    let currentTotal = 0; // To store the current total before coupon
+    let finalOrderTotal = 0; // To store the total after coupon application
+
+    const coupons = {
+        "AREKATIKAMEAT10": 10, // 10% discount
+        "FREESHIP": 0 // Example for free shipping, though not implemented here
+    };
 
     async function getProducts() {
         try {
@@ -37,6 +46,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (cart.length === 0) {
             cartContainer.innerHTML = '<p>Your cart is empty.</p>';
             cartTotalEl.textContent = '₹0';
+            currentTotal = 0;
+            finalOrderTotal = 0;
             return;
         }
 
@@ -81,8 +92,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         cartContainer.appendChild(table);
+        currentTotal = total; // Store the original total
+        finalOrderTotal = total; // Initialize final total with current total
         cartTotalEl.textContent = `₹${total}`;
     }
+
+    applyCouponBtn.addEventListener('click', () => {
+        const couponCode = couponCodeInput.value.toUpperCase();
+        if (coupons[couponCode] !== undefined) {
+            const discountPercentage = coupons[couponCode];
+            const discountedTotal = currentTotal * (1 - discountPercentage / 100);
+            finalOrderTotal = Math.ceil(discountedTotal); // Update final total
+            cartTotalEl.textContent = `₹${finalOrderTotal}`;
+            alert(`Coupon '${couponCode}' applied! You got ${discountPercentage}% off.`);
+        } else {
+            alert("Invalid coupon code.");
+            finalOrderTotal = currentTotal; // Reset final total if invalid
+            cartTotalEl.textContent = `₹${currentTotal}`; // Reset to original total if invalid
+        }
+    });
 
     window.updateQuantity = async function(itemId, quantity) {
         const userId = localStorage.getItem('userId');
@@ -128,6 +156,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     };
 
+    
+
     placeOrderBtn.addEventListener('click', async () => {
         const userId = localStorage.getItem('userId');
         if (!userId) {
@@ -139,29 +169,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
 
         if (paymentMethod === 'UPI') {
-            const upiModal = new bootstrap.Modal(document.getElementById('upi-payment-modal'));
-            upiModal.show();
-
-            document.querySelectorAll('#upi-app-selection button').forEach(button => {
-                button.addEventListener('click', () => {
-                    document.getElementById('upi-app-selection').classList.add('d-none');
-                    document.getElementById('qr-code-container').classList.remove('d-none');
-
-                    setTimeout(() => {
-                        const paymentStatus = document.getElementById('payment-status');
-                        paymentStatus.innerHTML = '<p class="text-success">Payment Successful!</p>';
-                        setTimeout(async () => {
-                            await placeOrder(userId, paymentMethod);
-                        }, 1000);
-                    }, 4000);
-                });
-            });
+            await placeOrder(userId, paymentMethod, finalOrderTotal);
         } else {
-            placeOrder(userId, paymentMethod);
+            await placeOrder(userId, paymentMethod, finalOrderTotal);
         }
     });
 
-    async function placeOrder(userId, paymentMethod) {
+    async function placeOrder(userId, paymentMethod, totalAmount) {
+        console.log('Attempting to place order with userId:', userId, 'paymentMethod:', paymentMethod, 'totalAmount:', totalAmount);
         const shippingAddress = {
             fullName: "Test User",
             address: "123 Test Street",
@@ -170,28 +185,56 @@ document.addEventListener("DOMContentLoaded", async () => {
         }; // Using dummy address for now
 
         try {
+            console.log('Sending checkout request to /api/orders/checkout');
             const response = await fetch(`${API_URL}/orders/checkout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ userId, shippingAddress, paymentMethod })
+                body: JSON.stringify({ userId, shippingAddress, paymentMethod, total: totalAmount }) // Use totalAmount
             });
+            console.log('Checkout response received:', response);
 
             if (response.ok) {
                 const order = await response.json();
-                console.log('Order placed successfully:', order);
-                console.log('Attempting redirection...');
-                setTimeout(() => {
-                    window.location.href = `order-confirmation.html?orderId=${order.id}`;
-                }, 0);
+                console.log('Order placed successfully. Order details:', order);
+                if (paymentMethod === 'UPI') {
+                    console.log('Attempting to create payment order for orderId:', order.id);
+                    const paymentResponse = await fetch(`${API_URL}/payment/create-order`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ amount: totalAmount, userId, orderId: order.id })
+                    });
+                    console.log('Payment response received:', paymentResponse);
+
+                    if (paymentResponse.ok) {
+                        const paymentData = await paymentResponse.json();
+                        console.log('Payment data received:', paymentData);
+                        window.location.href = paymentData.payment_link;
+                    } else {
+                        const errorData = await paymentResponse.json();
+                        console.error('Failed to create payment order. Server response:', errorData);
+                        alert('Failed to create payment order.');
+                    }
+                } else {
+                    if (order && order.id) {
+                        console.log('Redirecting to order confirmation page for orderId:', order.id);
+                        window.location.replace('/order-confirmation.html?orderId=' + order.id);
+                    } else {
+                        console.error('Order ID is missing from the response.', order);
+                        alert('Order placed, but failed to get order ID for redirection.');
+                    }
+                }
             } else {
                 const data = await response.json();
+                console.error('Failed to place order. Server response:', data);
                 alert(`Failed to place order: ${data.message}`);
             }
         } catch (error) {
             console.error('Error placing order:', error);
-            alert('An error occurred while placing the order.');
+            alert('An error occurred while placing the order. Please check the console for details.');
         }
     }
 
