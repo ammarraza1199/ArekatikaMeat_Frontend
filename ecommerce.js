@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const productGrid = document.getElementById("product-list");
+    const productGrid = document.getElementById("product-list") || document.getElementById("product-grid");
     const API_URL = 'https://arekatikameat-backend1.onrender.com/api';
     let products = [];
 
@@ -14,6 +14,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function renderProducts() {
+        if (!productGrid) {
+            console.error('Product container not found. Ensure element with id "product-list" or "product-grid" exists on page.');
+            return;
+        }
         productGrid.innerHTML = '';
         products.forEach(item => {
             const col = document.createElement("div");

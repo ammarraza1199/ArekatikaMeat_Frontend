@@ -19,7 +19,13 @@ const io = new Server(server, {
 const PORT = process.env.PORT || 3000;
 const DB_FILE = './db.json';
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: false
+}));
+app.options('*', cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, '..'))); // Serve files from project root
 app.use(express.static(path.join(__dirname, '../assets')));
