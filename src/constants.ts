@@ -1,0 +1,1 @@
+export const API_URL = 'https://arekatikameat-backe1nd.onrender.com/api';
