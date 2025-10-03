@@ -1,11 +1,12 @@
 
 export const bestSelling = [
     {
+    _id: "bs1",
     id: "bs1",
     title: "Mutton Biriyani Cut",
     desc: "Specially cut pieces for biriyani",
     pricePerKg: 600,
-    discount: "10",
+    discount: 10,
     weights: [
             "1kg",
             "2kg",
@@ -14,11 +15,12 @@ export const bestSelling = [
     image: "assets/Mutton_Biriyani_Cut.jpeg",
     },
     {
+    _id: "bs2",
     id: "bs2",
     title: "Mutton Kheema",
     desc: "Finely minced goat meat, perfect for kebabs & curries",
     pricePerKg: 550,
-    discount: "10",
+    discount: 10,
     weights: [
             "500g",
             "1kg",
@@ -27,11 +29,12 @@ export const bestSelling = [
     image: "assets/Mutton_Kheema.jpg",
     },
     {
+    _id: "bs3",
     id: "bs3",
     title: "Shoulder Cut",
     desc: "Juicy shoulder meat, great for roasting & curry",
     pricePerKg: 500,
-    discount: "10",
+    discount: 10,
     weights: [
             "1kg",
             "2kg",
@@ -40,6 +43,7 @@ export const bestSelling = [
     image: "assets/goat_shoulder_cut.jpg",
     },
     {
+    _id: "bs4",
     id: "bs4",
     title: "Thilli (Spleen)",
     desc: "Rich in iron, tender goat spleen for curries",
@@ -52,11 +56,12 @@ export const bestSelling = [
     image: "assets/Mutton_Spleen(Thilli).jpg",
     },
     {
+    _id: "bs5",
     id: "bs5",
     title: "Mutton Curry Cut (Boneless)",
     desc: "Tender boneless pieces, perfect for rich curries",
     pricePerKg: 650,
-    discount: "10",
+    discount: 10,
     weights: [
             "1kg",
             "1.5kg",
@@ -66,11 +71,12 @@ export const bestSelling = [
     ,
     },
     {
+    _id: "bs6",
     id: "bs6",
     title: "Head & Boti Mix",
     desc: "Traditional mix of head meat and boti for authentic curries",
     pricePerKg: 400,
-    discount: "5",
+    discount: 5,
     weights: [
             "1kg",
             "2kg"
@@ -79,6 +85,7 @@ export const bestSelling = [
     ,
     },
     {
+    _id: "bs7",
     id: "bs7",
     title: "BBQ / Grilling Cuts",
     desc: "Juicy cuts ideal for barbecue & grilling",
@@ -92,6 +99,7 @@ export const bestSelling = [
     image:  "assets/BBQ.jpg",
     },
     {
+    _id: "bs8",
     id: "bs8",
     title: "Mixed Curry Cut",
     desc: "Balanced mix of bone & meat for flavorful curries",
@@ -105,11 +113,12 @@ export const bestSelling = [
     image:  "assets/Mixed_Curry_Cut.jpg",
     },
     {
+    _id: "bs9",
     id: "bs9",
     title: "Liver",
     desc: "Rich in nutrients, perfect for fry and curry dishes",
     pricePerKg: 400,
-    discount: "5",
+    discount: 5,
     weights: [
             "500g",
             "1kg",
@@ -118,11 +127,12 @@ export const bestSelling = [
     image:  "assets/GoatLiverChunks.jpg",
     },
     {
+    _id: "bs10",
     id: "bs10",
     title: "Stew Cuts",
     desc: "Tender meat cubes for slow-cooked stews",
     pricePerKg: 500,
-    discount: "5",
+    discount: 5,
     weights: [
             "1kg",
             "2kg",
@@ -131,11 +141,12 @@ export const bestSelling = [
     image:  "assets/Stew_Cut.jpg",
     },
     {
+    _id: "bs11",
     id: "bs11",
     title: "Goat Paya",
     desc: "Best choice for rich and flavorful soups",
     pricePerKg: 700,
-    discount: "15",
+    discount: 15,
     weights: [
             "1kg",
             "2kg"
@@ -143,11 +154,12 @@ export const bestSelling = [
     image:  "assets/MUTTON-PAYA.jpg",
     },
     {
+    _id: "bs12",
     id: "bs12",
     title: "Goat Tongue",
     desc: "Delicacy for curries and grills",
     pricePerKg: 700,
-    discount: "15",
+    discount: 15,
     weights: [
             "500g",
             "1kg"
