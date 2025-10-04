@@ -55,6 +55,7 @@ const LoginPage: React.FC = () => {
       if (data.isAdmin) {
         localStorage.setItem('adminToken', data.token);
         localStorage.setItem('adminId', data._id);
+        window.dispatchEvent(new Event('userLogin'));
         navigate('/admin');
       } else {
         setMessage('Not authorized as an admin');
@@ -101,6 +102,7 @@ const LoginPage: React.FC = () => {
       if (!data.isAdmin) {
         localStorage.setItem('userToken', data.token);
         localStorage.setItem('userId', data._id);
+        window.dispatchEvent(new Event('userLogin'));
         navigate('/shop'); // Redirect to shop page
       } else {
         setMessage('Not authorized as a user');

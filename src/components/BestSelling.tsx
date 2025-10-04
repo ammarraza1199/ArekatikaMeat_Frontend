@@ -10,17 +10,23 @@ const BestSelling: React.FC = () => {
   const totalSlides = Math.ceil(bestSelling.length / itemsPerSlide);
 
   const handleAddToCart = async (productId: string, quantity: number, weight: string) => {
+    const userToken = localStorage.getItem('userToken');
+    if (!userToken) {
+      alert('Please login to add items to cart.');
+      return;
+    }
+    
     try {
       const config = {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('userToken')}`,
+          Authorization: `Bearer ${userToken}`,
         },
       };
       await axios.post(`${API_URL}/cart`, { productId, quantity, weight }, config);
       alert('Item added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);
-      alert('Failed to add item to cart. Please login.');
+      alert('Failed to add item to cart. Please try again.');
     }
   };
 

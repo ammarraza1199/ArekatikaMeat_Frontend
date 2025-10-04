@@ -24,6 +24,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath;
     }
+    if (imagePath.startsWith('/')) {
+      return imagePath;
+    }
     return `/${imagePath}`;
   };
 

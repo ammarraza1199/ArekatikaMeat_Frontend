@@ -7,17 +7,35 @@ const Navbar: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem('userToken')) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, [localStorage.getItem('userToken')]); // Re-run when userToken changes
+    const checkLoginStatus = () => {
+      if (localStorage.getItem('userToken')) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    };
+    
+    checkLoginStatus();
+    
+    // Listen for storage changes (when user logs in/out in another tab)
+    window.addEventListener('storage', checkLoginStatus);
+    
+    // Listen for custom login event
+    window.addEventListener('userLogin', checkLoginStatus);
+    window.addEventListener('userLogout', checkLoginStatus);
+    
+    return () => {
+      window.removeEventListener('storage', checkLoginStatus);
+      window.removeEventListener('userLogin', checkLoginStatus);
+      window.removeEventListener('userLogout', checkLoginStatus);
+    };
+  }, []); // Empty dependency array
 
   const handleLogout = () => {
     localStorage.removeItem('userToken');
     localStorage.removeItem('userId');
     setIsLoggedIn(false);
+    window.dispatchEvent(new Event('userLogout'));
     navigate('/auth');
   };
 
