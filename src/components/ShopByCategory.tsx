@@ -5,12 +5,12 @@ import { Link } from 'react-router-dom';
 const categories = [
   {
     title: 'Primary Cuts',
-    image: 'assets/meat1.jpg',
+    image: '/assets/meat1.jpg',
     link: '/shop'
   },
   {
     title: 'Organs',
-    image: 'assets/Mutton_Kidney.jpg',
+    image: '/assets/Mutton_Kidney.jpg',
     link: '/shop'
   },
   {
@@ -20,12 +20,12 @@ const categories = [
   },
   {
     title: 'Combos & Bulk Pack',
-    image: 'assets/EventsPack.jpg',
+    image: '/assets/EventsPack.jpg',
     link: '/shop'
   },
   {
     title: 'Extras and Addons',
-    image: 'assets/Extras_Addons.jpg',
+    image: '/assets/Extras_Addons.jpg',
     link: '/shop'
   }
 ];
