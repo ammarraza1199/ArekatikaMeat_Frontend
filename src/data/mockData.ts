@@ -12,7 +12,7 @@ export const bestSelling = [
             "2kg",
             "3kg"
         ],
-    image: "assets/Mutton_Biriyani_Cut.jpeg",
+    image: "/assets/Mutton_Biriyani_Cut.jpeg",
     },
     {
     _id: "bs2",
@@ -26,7 +26,7 @@ export const bestSelling = [
             "1kg",
             "1.5kg"
         ],
-    image: "assets/Mutton_Kheema.jpg",
+    image: "/assets/Mutton_Kheema.jpg",
     },
     {
     _id: "bs3",
@@ -40,7 +40,7 @@ export const bestSelling = [
             "2kg",
             "3kg"
         ],
-    image: "assets/goat_shoulder_cut.jpg",
+    image: "/assets/goat_shoulder_cut.jpg",
     },
     {
     _id: "bs4",
@@ -53,7 +53,7 @@ export const bestSelling = [
             "1kg",
             "2kg"
         ],
-    image: "assets/Mutton_Spleen(Thilli).jpg",
+    image: "/assets/Mutton_Spleen(Thilli).jpg",
     },
     {
     _id: "bs5",
@@ -67,7 +67,7 @@ export const bestSelling = [
             "1.5kg",
             "2kg"
         ],
-    image: "assets/Goat_Bone_Less.jpg"
+    image: "/assets/Goat_Bone_Less.jpg"
     ,
     },
     {
@@ -81,7 +81,7 @@ export const bestSelling = [
             "1kg",
             "2kg"
         ],
-    image: "assets/Head_Boti.jpg"
+    image: "/assets/Head_Boti.jpg"
     ,
     },
     {
@@ -96,7 +96,7 @@ export const bestSelling = [
             "2kg",
             "3kg"
         ],
-    image:  "assets/BBQ.jpg",
+    image:  "/assets/BBQ.jpg",
     },
     {
     _id: "bs8",
@@ -110,7 +110,7 @@ export const bestSelling = [
             "2kg",
             "3kg"
         ],
-    image:  "assets/Mixed_Curry_Cut.jpg",
+    image:  "/assets/Mixed_Curry_Cut.jpg",
     },
     {
     _id: "bs9",
@@ -124,7 +124,7 @@ export const bestSelling = [
             "1kg",
             "2kg"
         ],
-    image:  "assets/GoatLiverChunks.jpg",
+    image:  "/assets/GoatLiverChunks.jpg",
     },
     {
     _id: "bs10",
@@ -138,7 +138,7 @@ export const bestSelling = [
             "2kg",
             "3kg"
         ],
-    image:  "assets/Stew_Cut.jpg",
+    image:  "/assets/Stew_Cut.jpg",
     },
     {
     _id: "bs11",
@@ -151,7 +151,7 @@ export const bestSelling = [
             "1kg",
             "2kg"
         ],
-    image:  "assets/MUTTON-PAYA.jpg",
+    image:  "/assets/MUTTON-PAYA.jpg",
     },
     {
     _id: "bs12",
@@ -164,6 +164,6 @@ export const bestSelling = [
             "500g",
             "1kg"
         ],
-    image:  "assets/Tongue.jpg",
+    image:  "/assets/Tongue.jpg",
     }
 ];

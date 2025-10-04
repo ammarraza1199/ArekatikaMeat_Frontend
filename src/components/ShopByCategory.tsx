@@ -15,7 +15,7 @@ const categories = [
   },
   {
     title: 'Special Cuts',
-    image: 'assets/Mutton_Kheema.jpg',
+    image: '/assets/Mutton_Kheema.jpg',
     link: '/shop'
   },
   {

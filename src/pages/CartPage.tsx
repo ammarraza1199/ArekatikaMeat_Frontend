@@ -84,11 +84,13 @@ const CartPage: React.FC = () => {
       return;
     }
 
-    if (paymentMethod === 'UPI') {
-      setShowUpiModal(true);
-    } else {
-      placeOrder(paymentMethod);
+    if (cartItems.length === 0) {
+      alert('Your cart is empty.');
+      return;
     }
+
+    // Navigate to checkout page
+    navigate('/checkout');
   };
 
   const placeOrder = async (method: string) => {
@@ -186,30 +188,9 @@ const CartPage: React.FC = () => {
         )}
       </div>
       <div className="row mt-4">
-        <div className="col-md-6">
-          <h4>Payment Method</h4>
-          <Form.Check
-            type="radio"
-            label="UPI"
-            name="paymentMethod"
-            id="upi"
-            value="UPI"
-            checked={paymentMethod === 'UPI'}
-            onChange={(e) => setPaymentMethod(e.target.value)}
-          />
-          <Form.Check
-            type="radio"
-            label="Cash on Delivery"
-            name="paymentMethod"
-            id="cod"
-            value="Cash on Delivery"
-            checked={paymentMethod === 'Cash on Delivery'}
-            onChange={(e) => setPaymentMethod(e.target.value)}
-          />
-        </div>
         <div className="col-md-6 text-end">
           <h4>Total: <span id="cart-total">₹{calculateTotal()}</span></h4>
-          <Button variant="primary" onClick={handlePlaceOrder}>Place Order</Button>
+          <Button variant="primary" onClick={handlePlaceOrder}>Proceed to Checkout</Button>
         </div>
       </div>
 
