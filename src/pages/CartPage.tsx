@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Table, Button, Form, Modal } from 'react-bootstrap';
+import { Table, Button, Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../constants';
@@ -17,8 +17,6 @@ interface CartItem {
 
 const CartPage: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [paymentMethod, setPaymentMethod] = useState('UPI');
-  const [showUpiModal, setShowUpiModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -93,59 +91,6 @@ const CartPage: React.FC = () => {
     navigate('/checkout');
   };
 
-  const placeOrder = async (method: string) => {
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('userToken')}`,
-        },
-      };
-      const shippingAddress = { // Dummy address for now
-        fullName: "Test User",
-        address: "123 Test Street",
-        city: "Test City",
-        postalCode: "12345"
-      };
-      const orderItemsToSend = cartItems.map(item => ({
-        ...item,
-        product: item.product,
-      }));
-
-      // 1. Create order in your backend (initially with pending payment status)
-      const { data: createdOrder } = await axios.post(`${API_URL}/admin/orders`, { shippingAddress, paymentMethod: method, orderItems: orderItemsToSend }, config);
-
-      // 2. Initiate Cashfree payment session
-      const { data: cashfreeResponse } = await axios.post(`${API_URL}/payment/create-order`, {
-        orderId: createdOrder._id,
-        amount: createdOrder.totalPrice,
-      }, config);
-
-      // 3. Redirect to Cashfree payment page
-      if (cashfreeResponse && cashfreeResponse.payment_session_id) {
-        // Cashfree provides a JS SDK to handle redirection, or you can construct a form and submit it.
-        // For simplicity, we'll use a direct redirect if Cashfree provides a payment link.
-        // If using Cashfree's JS SDK, it would look something like:
-        // const cashfree = new Cashfree({
-        //   mode: "sandbox", // or "production"
-        // });
-        // cashfree.checkout({
-        //   paymentSessionId: cashfreeResponse.payment_session_id,
-        //   returnUrl: `http://localhost:3000/order-confirmation?order_id=${createdOrder._id}`,
-        // });
-
-        // For now, we'll assume a direct redirect is possible or handle it via a simple form submission
-        // This part might need adjustment based on actual Cashfree SDK usage.
-        window.location.href = `https://api.cashfree.com/pg/checkout/v1/payment?payment_session_id=${cashfreeResponse.payment_session_id}`;
-
-      } else {
-        throw new Error('Failed to get Cashfree payment session ID');
-      }
-
-    } catch (error) {
-      console.error('Error placing order:', error);
-      alert('Failed to place order.');
-    }
-  };
 
   return (
     <div className="container mt-5">
@@ -174,7 +119,7 @@ const CartPage: React.FC = () => {
                       type="number"
                       value={item.quantity}
                       min="1"
-                      onChange={(e) => updateQuantity(item._id, parseInt(e.target.value))}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateQuantity(item._id, parseInt(e.target.value))}
                     />
                   </td>
                   <td>₹{item.price * item.quantity}</td>
@@ -194,23 +139,6 @@ const CartPage: React.FC = () => {
         </div>
       </div>
 
-      {/* UPI Payment Modal */}
-      <Modal show={showUpiModal} onHide={() => setShowUpiModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>UPI Payment</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="text-center">
-          <div id="upi-app-selection">
-            <h6>Select UPI App</h6>
-            <div className="d-flex justify-content-center">
-              <Button variant="outline-primary" className="me-2" onClick={() => placeOrder('UPI')}>PhonePe</Button>
-              <Button variant="outline-primary" className="me-2" onClick={() => placeOrder('UPI')}>Google Pay</Button>
-              <Button variant="outline-primary" onClick={() => placeOrder('UPI')}>Paytm</Button>
-            </div>
-          </div>
-          {/* QR Code container and payment status can be added here if needed */}
-        </Modal.Body>
-      </Modal>
     </div>
   );
 };

@@ -49,7 +49,9 @@ const LoginPage: React.FC = () => {
   const handleAdminLogin = async () => {
     try {
       const url = `${API_URL}/users/login`;
+      console.log("Admin Login URL:", url);
       const { data } = await axios.post(url, { email: adminEmail, password: adminPassword });
+      console.log("Admin login response:", data);
       if (data.isAdmin) {
         localStorage.setItem('adminToken', data.token);
         localStorage.setItem('adminId', data._id);
@@ -58,7 +60,9 @@ const LoginPage: React.FC = () => {
         setMessage('Not authorized as an admin');
       }
     } catch (error: any) {
-      setMessage(error.response && error.response.data.message ? error.response.data.message : error.message);
+      console.error("Admin login error:", error);
+      const errorMessage = error.response?.data?.message || error.message || 'Admin login failed';
+      setMessage(errorMessage);
     }
   };
 
@@ -70,18 +74,30 @@ const LoginPage: React.FC = () => {
     try {
       const url = `${API_URL}/users/register`;
       console.log("Admin Signup URL:", url);
-      await axios.post(url, { firstName: adminFirstName, lastName: adminLastName, email: adminSignupEmail, password: adminSignupPassword, phone: adminPhone, isAdmin: true });
+      const response = await axios.post(url, { 
+        firstName: adminFirstName, 
+        lastName: adminLastName, 
+        email: adminSignupEmail, 
+        password: adminSignupPassword, 
+        phone: adminPhone, 
+        isAdmin: true 
+      });
+      console.log("Admin registration response:", response.data);
       showSuccessPopup('Admin registered successfully! Please login.');
       setAdminLogin(true);
     } catch (error: any) {
-      setMessage(error.response && error.response.data.message ? error.response.data.message : error.message);
+      console.error("Admin registration error:", error);
+      const errorMessage = error.response?.data?.message || error.message || 'Admin registration failed';
+      setMessage(errorMessage);
     }
   };
 
   const handleUserLogin = async () => {
     try {
       const url = `${API_URL}/users/login`;
+      console.log("User Login URL:", url);
       const { data } = await axios.post(url, { email: userEmail, password: userPassword });
+      console.log("User login response:", data);
       if (!data.isAdmin) {
         localStorage.setItem('userToken', data.token);
         localStorage.setItem('userId', data._id);
@@ -90,7 +106,9 @@ const LoginPage: React.FC = () => {
         setMessage('Not authorized as a user');
       }
     } catch (error: any) {
-      setMessage(error.response && error.response.data.message ? error.response.data.message : error.message);
+      console.error("User login error:", error);
+      const errorMessage = error.response?.data?.message || error.message || 'User login failed';
+      setMessage(errorMessage);
     }
   };
 
@@ -102,11 +120,21 @@ const LoginPage: React.FC = () => {
     try {
       const url = `${API_URL}/users/register`;
       console.log("User Signup URL:", url);
-      await axios.post(url, { firstName: userFirstName, lastName: userLastName, email: userSignupEmail, password: userSignupPassword, phone: userPhone, isAdmin: false });
+      const response = await axios.post(url, { 
+        firstName: userFirstName, 
+        lastName: userLastName, 
+        email: userSignupEmail, 
+        password: userSignupPassword, 
+        phone: userPhone, 
+        isAdmin: false 
+      });
+      console.log("Registration response:", response.data);
       showSuccessPopup('User registered successfully! Please login.');
       setUserLogin(true);
     } catch (error: any) {
-      setMessage(error.response && error.response.data.message ? error.response.data.message : error.message);
+      console.error("Registration error:", error);
+      const errorMessage = error.response?.data?.message || error.message || 'Registration failed';
+      setMessage(errorMessage);
     }
   };
 
