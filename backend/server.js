@@ -6,7 +6,8 @@ const http = require('http');
 const { Server } = require('socket.io');
 const fs = require('fs');
 const path = require('path');
-const { Cashfree } = require('cashfree-pg');
+const CashfreeSDK = require('cashfree-pg-sdk-nodejs');
+console.log('CashfreeSDK:', CashfreeSDK);
 
 const app = express();
 const server = http.createServer(app);
@@ -30,15 +31,9 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, '..'))); // Serve files from project root
 app.use(express.static(path.join(__dirname, '../assets')));
 
-const providedEnv = (process.env.CASHFREE_ENV || '').toUpperCase();
-const inferredEnv = (process.env.CASHFREE_SECRET_KEY || '').toLowerCase().includes('test') ? 'SANDBOX' : 'PRODUCTION';
-const cashfreeEnvironment = (providedEnv === 'SANDBOX' || providedEnv === 'PRODUCTION') ? providedEnv : inferredEnv;
-console.log('Cashfree environment:', cashfreeEnvironment);
-const cashfree = new Cashfree({
-  "XClientId": process.env.CASHFREE_APP_ID,
-  "XClientSecret": process.env.CASHFREE_SECRET_KEY,
-  "XEnvironment": cashfreeEnvironment,
-});
+CashfreeSDK.CFConfig.XClientId = process.env.CASHFREE_APP_ID;
+CashfreeSDK.CFConfig.XClientSecret = process.env.CASHFREE_SECRET_KEY;
+CashfreeSDK.CFConfig.XEnvironment = process.env.CASHFREE_ENV === 'PRODUCTION' ? CashfreeSDK.CFEnvironment.PRODUCTION : 'https://api.cashfree.com/pg';
 
 // Function to read the database
 const readDB = () => {
@@ -370,25 +365,13 @@ app.post('/api/payment/create-order', async (req, res) => {
                 "return_url": `https://arekatikameat-backend1.onrender.com/api/payment/success?order_id=${orderId}`
             }
         };
-
-        const response = await cashfree.PGCreateOrder("2023-08-01", request);
-        if (response?.status !== 200) {
-            console.error('Cashfree create order non-200:', response?.status, response?.data);
-        }
-        const data = response?.data || {};
-
-        // Derive a payment link for redirect from payment_session_id
-        const sessionId = data.payment_session_id;
-        const baseUrl = cashfreeEnvironment === 'PRODUCTION'
-          ? 'https://payments.cashfree.com/order/#'
-          : 'https://payments-test.cashfree.com/order/#';
-        const payment_link = sessionId ? `${baseUrl}${sessionId}` : undefined;
-
-        res.json({ ...data, payment_link });
+        const ordersApi = new CashfreeSDK.OrdersApi();
+        const response = await ordersApi.createOrder("2023-08-01", request);
+        res.json(response.data);
     } catch (error) {
         const cfErrorData = error?.response?.data || error?.message || error;
-        console.error("Error creating payment order:", cfErrorData);
-        res.status(500).json({ message: "Failed to create payment order", error: cfErrorData });
+        console.error("Error creating payment order:", cfErrorData, error.response);
+        res.status(500).json({ message: "Failed to create payment order", error: { name: error.name, message: error.message, stack: error.stack } });
     }
 });
 
@@ -402,7 +385,8 @@ app.get('/api/payment/success', async (req, res) => {
             return res.status(404).json({ message: 'Order not found' });
         }
 
-        const response = await cashfree.PGOrderFetchPayments("2023-08-01", order_id);
+        const ordersApi = new CashfreeSDK.OrdersApi();
+        const response = await ordersApi.getPaymentsForOrder("2023-08-01", order_id);
 
         if (response.data[0].payment_status === "SUCCESS") {
             db.orders[orderIndex].status = "Paid";
